@@ -1,0 +1,17 @@
+.login_modal_err_msg {
+  text-align: center;
+}
+
+.login_modal_err_msg i {
+  font-size: 32px;
+  margin-right: 30px;
+}
+
+#portal_menu_side .ant-divider-horizontal{
+  margin: 0;
+}
+#downloadDoc{
+  margin: 0;
+}
+
+

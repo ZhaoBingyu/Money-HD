@@ -1,0 +1,460 @@
+<div appFixHeight class="apply_for_purchase">
+  <div class="title">
+    <h3>购买申请</h3>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="20" [nzPush]="2" class="buy_product_apply_box">
+      <div nz-row>
+        <div nz-col [nzSpan]="10" class="buy_product_apply_desc">
+          <div class="">
+            <div class="product_title">
+              <i nz-icon type="safety-certificate" theme="outline"></i>
+              <span>产品信息</span>
+            </div>
+            <div class="product_desc">
+              <div class="product_name">
+                <span class="label">名称：</span>
+                <span class="content">{{productDetailInfo.productName}}</span>
+              </div>
+              <div class="product_term">
+                <span class="label">投资期限：</span>
+                <span class="content">{{productDetailInfo.investQuantumText}}</span>
+              </div>
+              <div class="product_yeji">
+                <span class="label">业绩基准：</span>
+                <span class="content money_data">{{productDetailInfo.investCriterion}}</span>
+              </div>
+              <div class="product_start_but">
+                <span class="label">起购金额：</span>
+                <span class="content money_data">{{productDetailInfo.buyProductMinAmount | currency: 'CNY':'symbol-narrow'}}</span>
+              </div>
+              <div class="product_risk_leveal">
+                <div nz-row>
+                  <div nz-col [nzSpan]="12">
+                    <span class="label">风险等级：</span>
+                    <span class="content">
+                      {{productDetailInfo.riskLevelText}}
+                    </span>
+                  </div>
+                  <div nz-col [nzSpan]="10">
+                    <nz-progress [nzPercent]="riskPercent" nzSize="small" [nzShowInfo]="false"></nz-progress>
+                  </div>
+                </div>
+              </div>
+              <nz-divider nzDashed></nz-divider>
+              <img [src]="productDetailInfo.imgUrl" alt="">
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="12" [nzPush]="2" class="buy_product_apply_form">
+          <div class="">
+            <form nz-form [formGroup]="validateForm" class="login-form">
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="amount">购买金额</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <!--<nz-input-group nzAddOnAfter="￥">-->
+                  <!--<input nz-input formControlName="amount"-->
+                  <!--type="number"-->
+                  <!--(keyup)="formatAmt()">-->
+                  <!--</nz-input-group>-->
+                  <nz-input-number
+                    formControlName="amount"
+                    [nzMin]="0"
+                    [nzStep]="0.01"
+                    [nzFormatter]="formatterDollar"
+                    [nzParser]="parserDollar"
+                  ></nz-input-number>
+                  <nz-form-explain
+                    *ngIf="validateForm.get('amount')?.dirty && validateForm.get('amount')?.errors">
+                    请输入购买金额！
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="licenseCode">短信验证码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <nz-input-group>
+                    <div nz-row [nzGutter]="12">
+                      <div nz-col [nzSpan]="14">
+                        <input nz-input formControlName="code" id="captcha" placeholder="验证码"
+                               oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                               maxlength="8">
+                      </div>
+                      <div nz-col [nzSpan]="10" class="captcha_box">
+                        <button id="getCaptcha" nzType="primary" nz-button *ngIf="!timerFlag" (click)="getCaptcha()">
+                          获取验证码
+                        </button>
+                        <button nz-button *ngIf="timerFlag" nzType="primary" style="width: 100%">{{countDownNum}}s
+                        </button>
+                        <div></div>
+                      </div>
+                    </div>
+                  </nz-input-group>
+                  <nz-form-explain
+                    class="err_msg"
+                    *ngIf="validateForm.get('code').dirty && validateForm.get('code').errors">
+                    &nbsp;{{captchaErrorMsg}}
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item nz-row style="margin-bottom:8px;">
+                <nz-form-control [nzSpan]="24" [nzOffset]="0" style="text-align: center">
+                  <label nz-checkbox formControlName="agree">
+                    <span>我已阅读并同意{{productDetailInfo.bankName}} <a href="javascript:;" (click)="showModal()"> 《e灵通理财产品说明书》</a></span>
+                  </label>
+                  <nz-form-explain
+                    class="err_msg"
+                    style="color: rgba(230,0,18,1)"
+                    *ngIf="validateForm.get('agree').dirty && validateForm.get('agree').value===false">
+                    请阅读并同意{{productDetailInfo.bankName}} 《e灵通理财产品说明书》
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-control>
+                  <button
+                    style="width: 100%"
+                    nz-button class="login-form-button" [nzType]="'primary'"
+                    (click)="submitApplyPurchase()">提交申购申请
+                  </button>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div nz-col [nzSpan]="20" [nzPush]="2">
+    <div class="product_detail_info">
+      <nz-tabset>
+        <nz-tab nzTitle="产品详情">
+          <div class="divider_box produce_sum_desc">
+            <nz-divider nzDashed [nzText]="text" nzOrientation="left">
+              <ng-template #text>
+                <span style="font-weight: bolder">产品概述</span>
+              </ng-template>
+            </nz-divider>
+            <div class="table_box">
+              <div nz-col [nzSpan]="12" [nzPush]="0">
+                <nz-table nzBordered [nzTitle]="" [nzFooter]="">
+                  <tbody>
+                  <tr>
+                    <td>产品名称</td>
+                    <td>e灵通</td>
+                  </tr>
+                  <tr>
+                    <td>成立日期</td>
+                    <td>2017-4-7</td>
+                  </tr>
+                  <tr>
+                    <td>申购费率</td>
+                    <td>0%</td>
+                  </tr>
+                  <tr>
+                    <td>客户最大持有</td>
+                    <td>2亿元</td>
+                  </tr>
+                  <tr>
+                    <td>风险级别</td>
+                    <td>低</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+              <div nz-col [nzSpan]="12" [nzPush]="0" style="margin-left: -2px;">
+                <nz-table nzBordered [nzTitle]="" [nzFooter]="">
+                  <tbody>
+                  <tr>
+                    <td>产品代码</td>
+                    <td>1701ELT</td>
+                  </tr>
+                  <tr>
+                    <td>投资管理机构</td>
+                    <td>中国工商银行</td>
+                  </tr>
+                  <tr>
+                    <td>赎回费率</td>
+                    <td>0%</td>
+                  </tr>
+                  <tr>
+                    <td>单日赎回上限</td>
+                    <td>1亿元</td>
+                  </tr>
+                  <tr>
+                    <td>业绩比较基准</td>
+                    <td>3.00%</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+            </div>
+          </div>
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text1" nzOrientation="left">
+              <ng-template #text1>
+                <span style="font-weight: bolder">投资管理人</span>
+              </ng-template>
+            </nz-divider>
+            <p style="line-height: 2em;text-align: justify;">
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;本产品的投资管理人为工商银行，工商银行接受客户的委托和授权，按照本产品说明书约定的投资方向和方式，进行投资和资产管理，代表客户签订投资和资产管理过程中涉及到的协议、合同等文本。工商银行拥有专业化的投资管理团队和丰富的投资经验，拥有银行间市场的交易资格。
+            </p>
+          </div>
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text2" nzOrientation="left">
+              <ng-template #text2>
+                <span style="font-weight: bolder">产品估值</span>
+              </ng-template>
+            </nz-divider>
+            <p style="line-height: 2em;text-align: justify;padding-left: 2em">
+              （一）估值日
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;本理财产品T日对T-1日持有资产进行估值，T日、T-1日均为工作日。
+              <br>
+              <br>
+              （二）估值对象
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;理财产品所拥有的债券和银行存款本息及其它投资等资产。
+              <br>
+              <br>
+              （三）估值方法
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;1.本产品持有的债券采用摊余成本法进行估值，即估值对象以买入成本列示，按票面利率或商定利率并考虑其买入时的溢价与折价，在其剩余期限内平均摊销，每日计提收益。
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;2.本产品持有的回购协议以成本列示，按商定利率在实际持有期间内逐日计提利息；
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;3.本产品持有的银行存款以本金列示，按商定利率逐日计提利息。
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;4.由于按摊余成本法估值可能会出现被估值对象的市价和成本价偏离，为消除或减少因产品份额净值的背离导致产品持有人权益的稀释或其他不公平的结果，在实际操作中，产品管理人与产品托管人需对产品资产净值按市价法定期进行重新评估，即进行"影子定价"。当影子定价确定的产品资产净值与摊余成本法计算的产品资产净值的偏离度的绝对值达到或超过0.5
+              %时，产品管理人应根据风险控制的需要调整组合。
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;5.国家有最新规定的，按其规定进行估值。
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;6.在任何情况下，产品管理人与托管人所共同认可的估值方式均视为客观、公允的估值方法。该产品估值均以产品公布的估值结果为准。
+            </p>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="投资对象">
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text3" nzOrientation="left">
+              <ng-template #text3>
+                <span style="font-weight: bolder">投资对象</span>
+              </ng-template>
+            </nz-divider>
+            <p style="line-height: 2em;text-align: justify;">
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;本产品主要投资于以下符合监管要求的各类资产：一是债券、存款等高流动性资产，包括但不限于各类债券、存款、货币市场基金、债券基金、质押式及买断式回购、银行承兑汇票投资等货币市场交易工具；二是债权类资产，包括但不限于债权融资类投资、收/受益权投资等。同时，产品因为流动性需要可开展存单质押、债券正回购等融资业务。
+            </p>
+            <div class="table_box">
+              <div nz-col [nzSpan]="20" [nzPush]="2">
+                <nz-table nzBordered nzTitle="各投资资产种类占总投资资产的投资比例如下，可在[-10％,+10％]的区间内浮动："
+                          [nzFooter]="tableFooter">
+                  <thead>
+                  <tr>
+                    <th>资产类别</th>
+                    <th>资产种类</th>
+                    <th>投资比例</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td rowspan="5">高流动性资产</td>
+                    <td>债券及债券基金</td>
+                    <td rowspan="5">50%-100%</td>
+                  </tr>
+                  <tr>
+                    <td>货币市场基金</td>
+                  </tr>
+                  <tr>
+                    <td>同业存款</td>
+                  </tr>
+                  <tr>
+                    <td>质押式及买断式回购</td>
+                  </tr>
+                  <tr>
+                    <td>银行承兑汇票投资</td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2">债权类资产</td>
+                    <td>债权融资类投资</td>
+                    <td rowspan="2">0%-100%</td>
+                  </tr>
+                  <tr>
+                    <td>收/受益权投资</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <ng-template #tableFooter>
+                  <p style="line-height: 2em;text-align: justify;">
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;本产品所投资的资产或资产组合均严格经过工商银行审批流程审批和筛选，在投资时达到可投资标准。资产或资产组合所涉及融资人比照工商银行评级标准均在A-级（含）以上；除本说明书特别约定外，拟投资的各类债券信用评级均在AA级（含）以上、短期融资券信用评级在A-1（含）以上。
+                  </p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="交易规则">
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text4" nzOrientation="left">
+              <ng-template #text4>
+                <span style="font-weight: bolder">申购规则</span>
+              </ng-template>
+            </nz-divider>
+            <p style="line-height: 2em;text-align: justify;">
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+              申购开放时间：00:00-15:30，T日购买，T日起息
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+              开放时间购买:开放时间内实时确认，实时扣款；
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+              非开放时间购买：自产品开放日起非开放时间可提出购买预约申请，等同在下一开放时间内的购买申请。 产品出现巨额申购时，客户当日申购资金无法实时确认。
+            </p>
+          </div>
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text5" nzOrientation="left">
+              <ng-template #text5>
+                <span style="font-weight: bolder">赎回规则</span>
+              </ng-template>
+            </nz-divider>
+            <p style="line-height: 2em;text-align: justify;">
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+              每个自然日为赎回开放日，支持7*24小时快速赎回
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+              客户于每个自然日赎回，资金实时入账； T日（工作日）估值公布前，若客户赎回产品份额时，按当时公布的产品份额折算为赎回款支付给客户,T-1日（工作日）收益将于估值公布后结转为客户理财交易账户中的产品份额。
+              T日（工作日）估值公布后，若客户赎回产品份额时，按当时公布的产品份额折算为赎回款支付给客户。
+              如果赎回日为非工作日，则赎回日前最近一工作日的收益以及赎回前各非工作日（不包括赎回当日）的收益在赎回日后最近一个估值公布日结转为客户理财交易账户中的产品份额。
+              产品出现巨额赎回时，每单一客户当日可通过“快速赎回”赎回不高于100万元资金，该限额内的资金实时入账。
+            </p>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="风险评级">
+          <div class="divider_box">
+            <nz-divider nzDashed [nzText]="text6" nzOrientation="left">
+              <ng-template #text6>
+                <span style="font-weight: bolder">产品风险评级说明</span>
+              </ng-template>
+            </nz-divider>
+            <div class="table_box">
+              <div nz-col [nzSpan]="20" [nzPush]="2">
+                <nz-table nzBordered nzTitle="中国工商银行产品风险评级说明(本评级为银行内部评级，仅供参考）"
+                          [nzFooter]="">
+                  <thead>
+                  <tr>
+                    <th nzWidth="100px">风险等级</th>
+                    <th nzWidth="100px">风险水平</th>
+                    <th>评级说明</th>
+                    <th nzWidth="100px">目标客户</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>PR1级</td>
+                    <td>很低</td>
+                    <td>产品保障本金，且预期收益受风险因素影响很小；或产品不保障本金但本金和预期收益受风险因素影响很小，且具有较高流动性。</td>
+                    <td>法人客户</td>
+                  </tr>
+                  <tr>
+                    <td>PR2级</td>
+                    <td>较低</td>
+                    <td>产品不保障本金，但本金和预期收益受风险因素影响较小；或承诺本金保障但产品收益具有较大不确定性的结构性存款理财产品。</td>
+                    <td>法人客户</td>
+                  </tr>
+                  <tr>
+                    <td>PR3级</td>
+                    <td>适中</td>
+                    <td>产品不保障本金，风险因素可能对本金和预期收益产生一定影响。</td>
+                    <td>法人客户</td>
+                  </tr>
+                  <tr>
+                    <td>PR4级</td>
+                    <td>较高</td>
+                    <td>产品不保障本金，风险因素可能对本金产生较大影响，产品结构存在一定复杂性。</td>
+                    <td>法人客户</td>
+                  </tr>
+                  <tr>
+                    <td>PR5级</td>
+                    <td>高</td>
+                    <td>产品不保障本金，风险因素可能对本金造成重大损失，产品结构较为复杂，可使用杠杆运作。</td>
+                    <td>法人客户</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+            </div>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+</div>
+
+
+<nz-modal nzWidth="900" [nzFooter]="null"
+          [(nzVisible)]="isVisible" nzTitle=""
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <iframe [src]="iframe"
+          width="100%" height="500"
+          frameborder="0"></iframe>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isLoginVisible" nzTitle="错误"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleLoginCancel()" (nzOnOk)="handleLoginOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    您尚未登录，请先登录！
+  </p>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isOpenAccountVisible" nzTitle="错误" (nzOnCancel)="handleOpenAccountCancel()"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnOk)="handleOpenAccountOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+   {{openAccountMsg}}
+  </p>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isResultVisible" nzTitle="提示"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleResultCancel()"
+          (nzOnOk)="handleResultOk()">
+  <div class="login_modal_err_msg">
+    <i nz-icon type="check-circle" theme="outline" style="color: rgba(230,0,18,1); font-size: 32px;"></i>
+    <h3 style="margin-top: 20px; margin-bottom: 20px; font-weight: bolder; color: #8c8c8c;"> 申购申请已提交，请尽快转入资金！</h3>
+    <div class="submit_info">
+      <div nz-row>
+        <div nz-col [nzSpan]="8" class="text_left">账户名称：</div>
+        <div nz-col [nzSpan]="16" class="text_right">北京用友融联科技有限公司</div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="8" class="text_left">转入账号：</div>
+        <div nz-col [nzSpan]="16" class="text_right">62286199508101271</div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="8" class="text_left">开户行：</div>
+        <div nz-col [nzSpan]="16" class="text_right">中国工商银行中关村支行</div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="8" class="text_left">申购金额：</div>
+        <div nz-col [nzSpan]="16" class="text_right">1,000.00</div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="8" class="text_left">注意事项：</div>
+        <div nz-col [nzSpan]="16" class="text_right">T日15:30之前转入资金当日起息15:30之后转入资金T+1日起息</div>
+      </div>
+    </div>
+
+  </div>
+</nz-modal>

@@ -1,0 +1,126 @@
+<div class="register" appFixHeight>
+  <div nz-row>
+    <div nz-col [nzSpan]="16" [nzPush]="4">
+      <nz-divider [nzText]="text1" nzOrientation="left" nzDashed>
+        <ng-template #text1>
+          <span style="font-weight: bolder">转出</span>
+        </ng-template>
+      </nz-divider>
+
+      <div class="step_box border_box">
+        <nz-divider [nzText]="text" nzOrientation="left" style="margin-bottom: 30px">
+          <ng-template #text>
+            <span style="font-weight: bolder">产品名称&nbsp;&nbsp;</span>
+            <img [src]="drawCashInfo.imgUrl" alt="" height="30">
+            {{drawCashInfo.productName}}
+          </ng-template>
+        </nz-divider>
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24">
+            可转出余额
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input
+                   [(ngModel)]="drawCashAmt"
+                   disabled
+                   placeholder=""
+                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                   maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+
+        <form nz-form [formGroup]="validateFormStep0">
+          <div nz-row>
+            <div nz-col [nzSpan]="16" [nzPush]="3">
+
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="amount" nzRequired>
+                  转出金额
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <nz-input-number
+                    formControlName="amount"
+                    [nzMin]="0"
+                    [nzStep]="0.01"
+                    [nzFormatter]="formatterDollar"
+                    [nzParser]="parserDollar"
+                  ></nz-input-number>
+                  <nz-form-explain
+                    *ngIf="validateFormStep0.get('amount').dirty && validateFormStep0.get('amount').errors">
+                    请输入转出金额！
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="code" nzRequired>
+                  验证码
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <div nz-row [nzGutter]="12">
+                    <div nz-col [nzSpan]="14">
+                      <input nz-input formControlName="code" id="code" placeholder=""
+                             oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                             maxlength="8"
+                             (blur)="checkCaptcha()"
+                      >
+                    </div>
+                    <div nz-col [nzSpan]="10" class="captcha_box">
+                      <button style="width: 100%" id="getCaptcha"
+                              nz-button *ngIf="!timerFlag"
+                              [nzType]="'primary'"
+                              (click)="getCaptcha()">获取验证码
+                      </button>
+                      <button style="width: 100%"
+                              [nzType]="'primary'"
+                              nz-button *ngIf="timerFlag">{{countDownNum}}s
+                      </button>
+                    </div>
+                  </div>
+                  <nz-form-explain
+                    *ngIf="validateFormStep0.get('code').dirty && validateFormStep0.get('code').errors">
+                    请输入验证码！
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="payPassword" nzRequired>
+                  支付密码
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <input nz-input type="password" id="payPassword" formControlName="payPassword" maxlength="32"
+                         oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')">
+                  <nz-form-explain
+                    *ngIf="validateFormStep0.get('payPassword').dirty && validateFormStep0.get('payPassword').errors">
+                    请输入支付密码！
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="text-align: center">
+                <button nz-button nzType="primary" (click)="drawCashSubmit()">提交</button>
+                <button nz-button nzType="primary" (click)="goBack()">返回</button>
+              </nz-form-item>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+  <nz-modal nzWidth="900" [nzFooter]="null"
+            nzOkText="确定"
+            nzCancelText="取消"
+            [(nzVisible)]="isVisible" nzTitle=""
+            (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <iframe [src]="iframe"
+            width="100%" height="500"
+            frameborder="0"></iframe>
+  </nz-modal>
+</div>

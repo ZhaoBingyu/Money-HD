@@ -1,0 +1,45 @@
+import {ajaxSubmit} from './util';
+
+// 运营管理:新增缴费
+function addCustPay(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/addCustPay';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理:删除缴费
+function deleteCustPay(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/deleteCustPay';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+
+}
+
+// 运营管理:缴费修改
+function updateCustPay(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/updateCustPay';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理:查询缴费list
+function selectCustPayList(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectCustPayList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理:查询单一缴费
+function selectCustPay(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectCustPay';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {
+  addCustPay,
+  deleteCustPay,
+  updateCustPay,
+  selectCustPayList,
+  selectCustPay
+};

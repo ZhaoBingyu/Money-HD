@@ -1,0 +1,57 @@
+import {Component, OnInit, DoCheck} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonService} from '../../service/common.service';
+
+@Component({
+  selector: 'app-portal-menu-side',
+  templateUrl: './portal-menu-side.component.html',
+  styleUrls: ['./portal-menu-side.component.css'],
+})
+export class PortalMenuSideComponent implements OnInit, DoCheck {
+  isVisible = false;
+  menuArray = [];
+  url: any;
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+
+  ngOnInit() {
+    this.getSideMenu();
+  }
+
+  ngDoCheck(): void {
+  }
+
+  // 获取侧边菜单
+  getSideMenu() {
+    try {
+      this.menuArray = JSON.parse(this.common.getSideMenu());
+      if (sessionStorage.getItem('defalutPwdUser')) {
+        this.menuArray = this.getCheckedTree(this.menuArray);
+        this.router.navigate([this.url]);
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  }
+
+
+  // 获取选择的树形结构 递归
+  getCheckedTree(data) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].menuName === '修改密码') {
+        this.url = data[i].url;
+      }
+      if (data[i].menuChildrenList) {
+        data[i].active = true;
+        this.getCheckedTree(data[i].children);
+      } else {
+        data[i].active = true;
+      }
+    }
+    return data;
+  }
+
+
+}

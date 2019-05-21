@@ -1,0 +1,133 @@
+.btn_box {
+  margin-top: 90px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.btn_box button {
+  margin-right: 120px;
+}
+
+.form_box {
+  border: 1px solid rgb(232, 232, 232);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form_box .ant-form-inline .ant-form-item {
+  /*width: 48%;*/
+  text-align: center;
+}
+
+.form_box .ant-form-item-control-wrapper {
+  /*width: 50%;*/
+}
+
+.query_btn_box button {
+  margin-right: 34px;
+}
+
+.page_box {
+  margin: 30px auto;
+  text-align: center;
+}
+
+:host ::ng-deep .title.ant-divider {
+  margin-bottom: 30px;
+}
+
+.query_btn_box {
+  margin: 15px auto;
+  text-align: right;
+}
+
+.login_modal_err_msg {
+  text-align: center;
+}
+
+.login_modal_err_msg i {
+  font-size: 32px;
+  margin-right: 30px;
+}
+
+.down_btn_box {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.edit {
+  margin: 3px 8px;
+
+}
+
+:host ::ng-deep .ant-table-fixed {
+  /*table-layout: fixed;*/
+}
+
+.excel_table tr th {
+  background: rgba(250, 250, 250, 1);
+}
+
+.excel_table tr td {
+  /*overflow: hidden;*/
+  /*white-space: nowrap;*/
+  /*text-overflow: ellipsis;*/
+  word-wrap:break-word
+}
+
+.excel_table tr th,
+.excel_table tr td {
+  /*width: auto;*/
+  border-right: 1px solid #d5d5d2;
+  text-align: center;
+}
+
+:host ::ng-deep .ant-table-thead tr th {
+  background: rgba(250, 250, 250, 1) !important;
+}
+
+.example {
+  text-align: center;
+  background: rgba(255, 0, 0, 0.05);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+  height: 300px;
+}
+
+:host ::ng-deep .ant-btn-primary[disabled] {
+  background: #f5f5f5;
+}
+
+:host ::ng-deep .ant-form-item-label {
+  /*width: 120px;*/
+  /*text-align: right;*/
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .ant-form-item-control {
+  /*width: 303px;*/
+}
+
+:host ::ng-deep .ant-form-item {
+  width: 88%;
+}
+
+:host ::ng-deep .ant-calendar-picker.ng-untouched.ng-pristine.ng-invalid {
+  width: 100% !important;
+}
+
+:host ::ng-deep .ant-form-item-children {
+  display: inline-block !important;
+  width: 100% !important;
+}
+
+:host ::ng-deep .ant-calendar-picker {
+  width: 100% !important;
+}
+
+:host ::ng-deep .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th {
+  background: rgba(250, 232, 230, 1) !important;
+}

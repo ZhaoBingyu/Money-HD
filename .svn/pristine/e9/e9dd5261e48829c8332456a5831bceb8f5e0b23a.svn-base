@@ -1,0 +1,42 @@
+import {ajaxSubmit} from './util';
+
+// 系统管理:新增码表
+function addEnum(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/addEnum';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 系统管理:删除码表
+function deleteEnum(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/deleteEnum';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 系统管理:码表修改
+function updateEnum(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/updateEnum';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 系统管理:查询码表list
+function selectEnumList(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectEnumList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 系统管理:查询单一码表
+function selectEnum(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectEnum';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {addEnum, deleteEnum, updateEnum, selectEnumList, selectEnum};
+
+
+
+

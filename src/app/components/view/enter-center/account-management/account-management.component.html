@@ -1,0 +1,158 @@
+<div id="busRole" appFixHeight>
+  <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <div nz-col nzSpan="24" nzOffset="0">
+      <nz-divider nzDashed [nzText]="text4" nzOrientation="left">
+        <ng-template #text4>
+          <span style="font-weight: bolder">理财账户</span>
+        </ng-template>
+      </nz-divider>
+      <div class="result_table">
+        <div id="exportableTable" class="hidden-table" style="margin-bottom: 30px" [hidden]="queryLoading">
+          <!--<nz-table #nzTable [nzData]="userRoleList" [nzShowPagination]="false"-->
+                    <!--nzBordered-->
+                    <!--[nzScroll]="{x:'700px',y: '460px' }"-->
+                    <!--nzSize="small"-->
+                    <!--[nzFrontPagination]="false"-->
+                    <!--class="excel_table">-->
+            <!--<thead (nzSortChange)="sort($event)" nzSingleSort>-->
+            <!--<tr class="resize_thead">-->
+              <!--&lt;!&ndash;<th nzWidth="100px">唯一标识</th>&ndash;&gt;-->
+              <!--&lt;!&ndash;<th nzWidth="100px">产品图片地址</th>&ndash;&gt;-->
+              <!--<th nzWidth="100px">企业名称</th>-->
+              <!--&lt;!&ndash;<th nzWidth="100px">营业执照号</th>&ndash;&gt;-->
+              <!--<th nzWidth="100px">银行名称</th>-->
+              <!--<th nzWidth="100px">银行联行行号</th>-->
+              <!--<th nzWidth="100px">对公账号</th>-->
+              <!--<th nzWidth="100px">产品名称</th>-->
+              <!--&lt;!&ndash;<th nzWidth="100px">产品编码</th>&ndash;&gt;-->
+              <!--&lt;!&ndash;<th nzWidth="100px">产品银行编码</th>&ndash;&gt;-->
+              <!--<th nzWidth="100px">开户状态</th>-->
+              <!--&lt;!&ndash;<th nzWidth="100px">开户状态描述</th>&ndash;&gt;-->
+              <!--&lt;!&ndash;<th nzWidth="100px">创建日期</th>&ndash;&gt;-->
+              <!--&lt;!&ndash;<th nzWidth="100px">创建时间</th>&ndash;&gt;-->
+              <!--&lt;!&ndash;<th nzWidth="100px">订单号</th>&ndash;&gt;-->
+              <!--<th nzWidth="100px">操作</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody class="resize_tboday">-->
+            <!--<tr *ngFor="let data of nzTable.data">-->
+              <!--&lt;!&ndash;<td>{{data.clientId}}</td>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>{{data.imgUrl}}</td>&ndash;&gt;-->
+              <!--<td>{{data.companyName}}</td>-->
+              <!--&lt;!&ndash;<td>{{data.companyNo}}</td>&ndash;&gt;-->
+              <!--<td>{{data.bankName}}</td>-->
+              <!--<td>{{data.bankNo}}</td>-->
+              <!--<td>{{data.accountNo}}</td>-->
+              <!--<td>{{data.productName}}</td>-->
+              <!--&lt;!&ndash;<td>{{data.productCode}}</td>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>{{data.bankCode}}</td>&ndash;&gt;-->
+              <!--<td>{{data.status}}</td>-->
+              <!--&lt;!&ndash;<td>{{data.statusDes}}</td>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>{{data.createDate}}</td>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>{{data.createTime}}</td>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>{{data.orderNo}}</td>&ndash;&gt;-->
+              <!--<td>-->
+                <!--<button nz-button nzType="primary" (click)="goDrawCash(data)" nzSize="small">转出</button>-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</nz-table>-->
+
+
+
+          <nz-table #nestedTable [nzData]="userRoleList"
+                    [nzShowPagination]="false"
+                    [nzScroll]="{y: '460px' }"
+                    nzSize="small"
+                    [nzFrontPagination]="false">
+            <thead>
+            <tr>
+              <th nzWidth='67px' nzShowExpand></th>
+              <!--<th nzWidth='100px'>唯一标识</th>-->
+              <!--<th nzWidth='100px'>产品图片地址</th>-->
+              <th nzWidth='100px'>企业名称</th>
+              <th nzWidth='100px'>营业执照号</th>
+              <th nzWidth='100px'>银行名称</th>
+              <th nzWidth='100px'>银行联行行号</th>
+              <th nzWidth='100px'>产品名称</th>
+              <th nzWidth='100px'>产品编码</th>
+              <!--<th nzWidth='100px'>产品银行编码</th>-->
+              <!--<th nzWidth='100px'>对公账号</th>-->
+              <!--<th nzWidth='100px'>开户状态</th>-->
+              <!--<th nzWidth='100px'>开户状态描述</th>-->
+              <!--<th nzWidth='100px'>创建日期</th>-->
+              <!--<th nzWidth='100px'>创建时间</th>-->
+              <!--<th nzWidth='100px'>订单号</th>-->
+              <th nzWidth='100px'>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+              <tr>
+                <td nzShowExpand [(nzExpand)]="data.expand"></td>
+                <!--<td>{{data.clientId}}</td>-->
+                <!--<td>{{data.imgUrl}}</td>-->
+                <td>{{data.companyName}}</td>
+                <td>{{data.companyNo}}</td>
+                <td>{{data.bankName}}</td>
+                <td>{{data.bankNo}}</td>
+                <td>{{data.productName}}</td>
+                <td>{{data.productCode}}</td>
+                <!--<td>{{data.bankCode}}</td>-->
+                <!--<td>{{data.accountNo}}</td>-->
+                <!--<td>{{data.status}}</td>-->
+                <!--<td>{{data.statusDes}}</td>-->
+                <!--<td>{{data.createDate}}</td>-->
+                <!--<td>{{data.createTime}}</td>-->
+                <!--<td>{{data.orderNo}}</td>-->
+                <td>
+                  <button nz-button nzType="primary" (click)="goDrawCash(data)" nzSize="small">转出</button>
+                </td>
+              </tr>
+              <tr [nzExpand]="data.expand">
+                <td></td>
+                <td colspan="7">
+                  <nz-table #innerTable [nzData]="nestedTable.data" nzSize="middle" [nzShowPagination]="false">
+            <thead>
+            <tr>
+              <th nzWidth='100px'>产品银行编码</th>
+              <th nzWidth='100px'>对公账号</th>
+              <th nzWidth='100px'>开户状态</th>
+              <th nzWidth='100px'>开户状态描述</th>
+              <th nzWidth='100px'>创建日期</th>
+              <th nzWidth='100px'>创建时间</th>
+              <th nzWidth='100px'>订单号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of innerTable.data">
+              <td>{{data.bankCode}}</td>
+              <td>{{data.accountNo}}</td>
+              <td>{{data.status}}</td>
+              <td>{{data.statusDes}}</td>
+              <td>{{data.createDate}}</td>
+              <td>{{data.createTime}}</td>
+              <td>{{data.orderNo}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+          </td>
+          </tr>
+          </ng-template>
+          </tbody>
+          </nz-table>
+        </div>
+        <div class="example" [hidden]="!queryLoading">
+          <nz-spin [nzSize]="'large'" nzTip='Loading...'></nz-spin>
+        </div>
+        <!--<div class="page_box">-->
+        <!--<nz-pagination [nzPageIndex]="pageVo.currentPage"-->
+        <!--[nzTotal]="pageVo.totalPages"-->
+        <!--nzShowQuickJumper (nzPageIndexChange)="querySubmit()">-->
+        <!--</nz-pagination>-->
+        <!--</div>-->
+      </div>
+    </div>
+  </nz-content>
+</div>
+

@@ -1,0 +1,327 @@
+import {Injectable} from '@angular/core';
+import {CommonUrlService} from './common-url.service';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {Subject, Observable} from 'rxjs';
+import * as $ from 'jquery';
+import * as util from './common/util';
+import * as buttonEnumManage from './common/buttonEnumManage';
+import * as loginManage from './common/loginManage';
+import * as userManage from './common/userManage';
+import * as roleManage from './common/roleManage';
+import * as menuManage from './common/menuManage';
+import * as buttonManage from './common/buttonManage';
+import * as enumManage from './common/enumManage';
+import * as equipmentManage from './common/equipmentManage';
+import * as certificateManage from './common/certificateManage';
+import * as custPayManage from './common/custPayManage';
+import * as payTranManage from './common/payTranManage';
+import * as agentReportManage from './common/agentReportManage';
+import * as rangeGenReportManage from './common/rangeGenReportManage';
+import * as sumGenReportManage from './common/sumGenReportManage';
+import {ajaxSubmit,ajaxAsyncSubmit} from './common/util';
+import * as provinceCityData from './common/provinceCityData';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CommonService {
+
+
+  /** 订阅路由跳转 **/
+  private routerJump = new Subject();
+
+  setRouterJump(data) {
+    this.routerJump.next(data);
+  }
+
+  getRouterJump() {
+    return this.routerJump.asObservable();
+  }
+
+  /** 订阅控制模态框显示 **/
+  private showModaFlagUpdated = new Subject();
+
+  setShowModaFlag(data) {
+    this.showModaFlagUpdated.next(data);
+  }
+
+  getShowModalFlag() {
+    return this.showModaFlagUpdated.asObservable();
+  }
+
+  /** 订阅控制loading模态框显示 **/
+  private showLoadingModalFlagUpdated = new Subject();
+
+  setShowLoadingModalFlagUpdated(data) {
+    this.showLoadingModalFlagUpdated.next(data);
+  }
+
+  getShowLoadingModalFlagUpdated() {
+    return this.showLoadingModalFlagUpdated.asObservable();
+  }
+
+  /** 订阅控制菜单更新 **/
+  private refreshMenuItemInfo = new Subject();
+
+  setRefreshMenuItemInfo(data) {
+    this.refreshMenuItemInfo.next(data);
+  }
+
+  getRefreshMenuItemInfo() {
+    return this.refreshMenuItemInfo.asObservable();
+  }
+
+  /** 订阅控制菜单列表更新 **/
+  private refreshMenuListInfo = new Subject();
+
+  setRefreshMenuListInfo(data) {
+    this.refreshMenuListInfo.next(data);
+  }
+
+  getRefreshMenuListInfo() {
+    return this.refreshMenuListInfo.asObservable();
+  }
+
+  constructor(public url: CommonUrlService, private http: HttpClient, private router: Router) {
+  }
+
+
+  /** 查询 理财产品列表查询 查询提供给客户的理财产品列表基本信息 **/
+  yql_fundQueryProductListInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundQueryProductListInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 查询 理财产品详细信息查询 查询提供给客户的理财产品的详细信息 **/
+  yql_fundQueryProductInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundQueryProductInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+
+  /** 注册 注册手机短信 **/
+  yql_fundSendMessage(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundSendMessage.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 注册 注册手机短信验证 **/
+  yy_sendMessageValidate(sendData) {
+    const sendUrl = this.url.commonUrl + 'yy_sendMessageValidate.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 注册 注册图片上传 **/
+  yql_registerCustomerInfoImg(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_registerCustomerInfoImg.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 注册 注册企业对公开户行信息 **/
+  yql_fundRegisterCustomerBankInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundRegisterCustomerBankInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 注册 注册省市区 **/
+  yql_fundRegisterCustomerProvinceCity(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundRegisterCustomerProvinceCity.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 注册 注册信息 **/
+  yql_fundRegisterCustomerInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundRegisterCustomerInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 登录**/
+  yql_fundPlatformLogin(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundPlatformLogin.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 登录密码重置 注册手机短信  忘记密码需要发送短信验证码**/
+  yql_fundSendMessageFindPwd(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundSendMessage.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 登录密码重置 图片验证码  忘记密码需要获取图片验证码**/
+  yql_fundVerifyCode(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundVerifyCode.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 登录密码重置 重置登入密码  重置登入密码**/
+  yql_fundForgotLoginPassword(sendData) {
+    const sendUrl = this.url.commonUrl + 'yql_fundForgotLoginPassword.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 登录密码重置 修改登入密码  修改登入密码**/
+  api_fundChangeLoginPassword(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundChangeLoginPassword.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 支付密码重置 修改支付密码  修改支付密码**/
+  api_fundChangePayPassword(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundChangePayPassword.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业基本信息  企业基本信息【ICBC开户,上海银行，江苏银行】**/
+  api_fundCompanyInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundCompanyInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业对公账户基本信息  结算账户帐号 企业对公账户基本信息【ICBC开户,上海银行，江苏银行】**/
+  api_fundCompanyAccount(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundCompanyAccount.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业开户行业字典表  企业开户行业【ICBC开户,上海银行，江苏银行】**/
+  api_fundOpenIndustryInfo(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundOpenIndustryInfo.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业开户发送短信  企业开户发送短信【ICBC开户,上海银行，江苏银行】**/
+  api_fundOpenSendMessage(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundOpenSendMessage.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业开户  企业开户【ICBC开户,上海银行，江苏银行】**/
+  api_fundAccountOpen(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_fundAccountOpen.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业理财开户信息查询列表  企业开户【ICBC开户,上海银行，江苏银行】**/
+  api_companyBankList(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_companyBankList.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 开户 企业开户结果查询  企业开户结果查询**/
+  api_companyBankResult(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_companyBankResult.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+
+  /** 申购  申购短信验证码  根据产品需要发送对用银行的短信验证码**/
+  api_buySendMessage(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_buySendMessage.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 申购  申购  申购**/
+  api_buyProduct(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_buyProduct.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+  /** 申购  申购结果查询  申购结果查询**/
+  api_buyProductResult(sendData) {
+    const sendUrl = this.url.commonUrl + 'api_buyProductResult.do';
+    return ajaxSubmit(sendUrl, sendData);
+  }
+
+
+  /** 按钮管理 **/
+  buttonListObj: any = buttonEnumManage.buttonListObj;   // 所有按钮
+  authBtnList = buttonEnumManage.authBtnList;   // 有权限按钮
+
+  /** 登录管理 **/
+  login = loginManage.login; // 登录
+  signOut = loginManage.signOut;  // 退出
+  validateLogin = loginManage.validateLogin;  //  登录验证
+  getSideMenu = loginManage.getSideMenu; // 获取侧边菜单
+
+  /** 用户管理 **/
+  saveUserInfo = userManage.saveUserInfo; // 用户信息管理:新增用户
+  deleteUser = userManage.deleteUser;  // 用户信息管理:删除用户
+  freezingOrStartUser = userManage.freezingOrStartUser;  // 用户信息管理:冻结或启用用户
+  getUserRoleList = userManage.getUserRoleList; // 用户信息管理:查询用户列表
+  queryUserInfo = userManage.queryUserInfo;  // 用户信息管理:查询用户列表
+  restartUserPwd = userManage.restartUserPwd;  // 用户信息管理:重置用户密码
+  updatePwd = userManage.updatePwd;  // 用户信息管理:修改用户密码
+  updateUser = userManage.updateUser;  // 用户信息管理:修改用户
+
+  /** 权限管理 **/
+  addRole = roleManage.addRole; //  权限信息管理:新增角色
+  deleteRole = roleManage.deleteRole;  // 权限信息管理:删除角色
+  updateRole = roleManage.updateRole;  // 权限信息管理:修改角色
+  queryMenuListByRoleId = roleManage.queryMenuListByRoleId;  // 权限信息管理:根据角色id查询菜单列表
+  addRolePermission = roleManage.addRolePermission;  // 权限信息管理:角色权限维护
+
+  addChildMenu = menuManage.addChildMenu; //  权限信息管理:增加子菜单
+  deleteMenu = menuManage.deleteMenu;  // 权限信息管理:删除菜单
+  updateMenu = menuManage.updateMenu;  // 权限信息管理:修改菜单
+  queryMenuList = menuManage.queryMenuList;  // 权限信息管理:查询菜单列表
+  queryMenu = menuManage.queryMenu;  // 权限信息管理:查询某一菜单
+
+  addBtn = buttonManage.addBtn;  // 权限信息管理:增加按钮
+  delBtn = buttonManage.delBtn;  // 权限信息管理:删除按钮
+  updateBtn = buttonManage.updateBtn;  // 权限信息管理:修改按钮
+
+  /** 报表管理 **/
+  sumGenReport = sumGenReportManage.sumGenReport;  // 报表管理:银企联汇总查询+季度
+  downSumGenReport = sumGenReportManage.downSumGenReport; //  报表管理:银企联汇总查询+季度下载excel
+
+  rangeGenReport = rangeGenReportManage.rangeGenReport;  // 报表管理:根据时间范围银企联汇总
+  downRangeGenReport = rangeGenReportManage.downRangeGenReport; // 报表管理:根据时间范围银企联汇总下载
+
+  agentReport = agentReportManage.agentReport;  // 报表管理:代理商报表
+  downAgentReport = agentReportManage.downAgentReport; // 报表管理:代理商报表下载
+
+  /** 系统管理 **/
+  addEnum = enumManage.addEnum; //  系统管理:新增码表
+  deleteEnum = enumManage.deleteEnum;  // 系统管理:删除码表
+  updateEnum = enumManage.updateEnum;  // 系统管理:码表修改
+  selectEnumList = enumManage.selectEnumList;  // 系统管理:查询码表list
+  selectEnum = enumManage.selectEnum;  // 系统管理:查询单一码表
+
+  /** 运营管理 **/
+  addCustPay = custPayManage.addCustPay; //  运营管理:新增缴费
+  deleteCustPay = custPayManage.deleteCustPay;  // 运营管理:删除缴费
+  updateCustPay = custPayManage.updateCustPay;  // 运营管理:缴费修改
+  selectCustPayList = custPayManage.selectCustPayList;  // 运营管理:查询缴费list
+  selectCustPay = custPayManage.selectCustPay;  // 运营管理:查询单一缴费
+
+  addEquipmentInfo = equipmentManage.addEquipmentInfo; //   运营管理 设备管理表:新增
+  deleteEquipmentInfo = equipmentManage.deleteEquipmentInfo;  // 运营管理 设备管理表:删除
+  updateEquipmentInfo = equipmentManage.updateEquipmentInfo;  // 运营管理 设备管理表:设备修改
+  selectEquipmentInfoList = equipmentManage.selectEquipmentInfoList;  // 运营管理 设备管理表:查询设备list
+  selectEquipmentInfo = equipmentManage.selectEquipmentInfo;  // 运营管理 设备管理表:查询单一设备
+
+  addCertificateInfo = certificateManage.addCertificateInfo; //  运营管理 证书管理表:新增
+  deleteCertificateInfo = certificateManage.deleteCertificateInfo;  // 运营管理 证书管理表:新增
+  updateCertificateInfo = certificateManage.updateCertificateInfo;  // 运营管理 证书管理表:新增
+  selecTCertificateInfoList = certificateManage.selecTCertificateInfoList;  // 运营管理 证书管理表:新增
+  selecTCertificateInfo = certificateManage.selecTCertificateInfo;  // 运营管理 证书管理表:新增
+
+  selectPayDetailList = payTranManage.selectPayDetailList;   // 运营管理:查询支付交易列表
+
+  /** util **/
+  reqPhone = util.reqPhone; // 手机号校验规则
+  onDateChange = util.onDateChange; //  日期格式化 (日期转字符串)YYYYDDMM
+  onDateFormatChange = util.onDateFormatChange; //日期格式化 (日期转字符串)YYYY-DD-  MM
+  onStrToDateChange = util.onStrToDateChange; //  获取日期 (字符串转日期)
+  queryEnumList = util.queryEnumList; // 码表查询
+  writeLoginInfo = util.writeLoginInfo; // cookie 保存登录信息
+  getLoginInfo = util.getLoginInfo; // cookie 获取登录信息
+  getUrlParameter = util.getUrlParameter; // 获取url参数
+
+  /** 省市联动数据 **/
+  provinceCityData = provinceCityData.options;
+
+}
+
+

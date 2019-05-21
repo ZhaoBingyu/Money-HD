@@ -1,0 +1,39 @@
+import {ajaxSubmit} from './util';
+
+// 权限信息管理:增加子菜单
+function addChildMenu(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/addChildMenu';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:删除菜单
+function deleteMenu(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/deleteMenu';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:修改菜单
+function updateMenu(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/updateMenu';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:查询菜单列表
+function queryMenuList(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/queryMenuList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:查询某一菜单
+function queryMenu(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/queryMenu';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+
+export {addChildMenu, deleteMenu, queryMenu, queryMenuList, updateMenu};

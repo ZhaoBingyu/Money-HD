@@ -1,0 +1,38 @@
+import {ajaxSubmit} from './util';
+
+/** 权限信息管理:新增角色 **/
+function addRole(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/addRole';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 权限信息管理:删除角色 **/
+function deleteRole(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/deleteRole';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 权限信息管理:修改角色 **/
+function updateRole(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/updateRole';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 权限信息管理:根据角色id查询菜单列表 **/
+function queryMenuListByRoleId(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/queryMenuListByRoleId';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 权限信息管理:角色权限维护 **/
+function addRolePermission(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/addRolePermission';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {addRole, deleteRole, updateRole, queryMenuListByRoleId, addRolePermission};

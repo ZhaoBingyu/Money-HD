@@ -1,0 +1,141 @@
+.apply_for_purchase {
+}
+
+.title {
+  width: 100%;
+  height: auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.title h3 {
+  display: inline-block;
+  color: rgba(230, 0, 18, 1);
+  font-size: 36px;
+  font-weight: bolder;
+  border-bottom: 2px solid rgba(230, 0, 18, 1);
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+}
+
+.buy_product_apply_box {
+  padding: 20px;
+  border: 1px solid rgba(232, 232, 232, 1);
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.buy_product_apply_desc {
+  border-right: 1px dashed rgba(232, 232, 232, 1);
+}
+
+.product_detail_info {
+  padding: 35px 30px;
+  border: 1px solid rgba(232, 232, 232, 1);
+  border-radius: 4px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 40px;
+}
+
+::ng-deep .apply_for_purchase .anticon {
+  font-size: 26px;
+  color: rgba(230, 0, 18, 1);
+}
+
+.product_title {
+  font-size: 22px;
+  font-weight: bolder;
+  color: rgba(230, 0, 18, 1);
+  margin-bottom: 15px;
+}
+
+.product_title span {
+  display: inline-block;
+  position: relative;
+  left: 4px;
+  top: -4px;
+}
+
+.product_desc {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.product_desc > div {
+  margin-bottom: 15px;
+}
+
+.product_desc .label {
+
+}
+
+
+
+::ng-deep .apply_for_purchase .ant-progress-inner {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+::ng-deep .apply_for_purchase .ant-table-placeholder {
+  display: none;
+}
+
+.divider_box {
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.produce_sum_desc tr td:first-child {
+  background: rgba(255, 232, 230, 0.8);
+}
+
+.product_detail_info td {
+  font-weight: bolder;
+}
+
+::ng-deep .ant-table-thead > tr > th {
+  background: rgba(255, 232, 230, 0.8);
+}
+
+::ng-deep .apply_for_purchase .ant-input-number {
+  width: 100%;
+}
+
+.login_modal_err_msg {
+  text-align: center;
+}
+
+.submit_info > div span {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+}
+
+.submit_info > div {
+  margin-bottom: 10px;
+}
+
+.text_left {
+  text-align: right;
+}
+
+.text_right {
+  text-align: left;
+}
+
+.product_desc .content {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.product_desc .money_data {
+  font-size: 22px;
+  font-weight: bolder;
+  color: rgba(230, 0, 18, 1);
+}
+
+
+.apply_for_purchase {
+  max-width: 1400px;
+  margin: auto;
+}

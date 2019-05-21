@@ -1,0 +1,59 @@
+import {ajaxSubmit} from './util';
+
+/** 用户信息管理:新增用户 **/
+function saveUserInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/user/addUser';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:删除用户 **/
+function deleteUser(obj) {
+  const sendUrl = this.url.commonUrl + '/user/deleteUser';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:冻结或启用用户 **/
+function freezingOrStartUser(obj) {
+  const sendUrl = this.url.commonUrl + '/user/freezingOrStartUser';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:查询角色列表 **/
+function getUserRoleList(obj) {
+  const sendUrl = this.url.commonUrl + '/user/queryRoleList';
+  const sendData = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:查询用户列表 **/
+function queryUserInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/user/queryUserList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:重置用户密码 **/
+function restartUserPwd(obj) {
+  const sendUrl = this.url.commonUrl + '/user/restartUserPwd';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:修改用户密码 **/
+function updatePwd(obj) {
+  const sendUrl = this.url.commonUrl + '/user/updatePwd';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+/** 用户信息管理:修改用户 **/
+function updateUser(obj) {
+  const sendUrl = this.url.commonUrl + '/user/updateUser';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {saveUserInfo, deleteUser, freezingOrStartUser, getUserRoleList, queryUserInfo, restartUserPwd, updatePwd, updateUser};

@@ -1,0 +1,28 @@
+import {Component, OnInit} from '@angular/core';
+
+@Component({
+  selector: 'app-money-hd-home',
+  templateUrl: './money-hd-home.component.html',
+  styleUrls: ['./money-hd-home.component.css']
+})
+export class MoneyHdHomeComponent implements OnInit {
+  // 理财产品List
+  public productList = [{
+    imgUrl: '../../../../assets/img/u11.jpg',
+    name: 'e灵通净值型法人无固定期限人民币理财产品',
+    desc: '',
+    rate: '3'
+  }, {
+    imgUrl: '../../../../assets/img/u11.jpg',
+    name: 'e灵通净值型法人无固定期限人民币理财产品',
+    desc: '',
+    rate: '4.5'
+  }];
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+}

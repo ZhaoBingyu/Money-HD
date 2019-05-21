@@ -1,0 +1,25 @@
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  ngOnInit() {
+    this.getChannelNo();
+  }
+
+  // 保存获取channelNo参数
+  getChannelNo() {
+    const channelNo = this.common.getUrlParameter('channelNo');
+    sessionStorage.setItem('channelNo', channelNo);
+  }
+
+}

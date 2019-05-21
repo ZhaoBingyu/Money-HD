@@ -1,0 +1,19 @@
+import {downloadFile, downloadFileGet, ajaxSubmit} from './util';
+
+// 报表管理:根据时间范围银企联汇总下载
+function downSumGenReport(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/downReport001?queryDate=' + obj.queryDate;
+  downloadFileGet(sendUrl, obj);
+}
+
+// 报表管理:根据时间范围银企联汇总
+function sumGenReport(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/report001';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {
+  downSumGenReport,
+  sumGenReport
+};

@@ -1,0 +1,54 @@
+import {Injectable} from '@angular/core';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {CommonService} from '../service/common.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class RouterGuard implements CanActivate {
+  urlList: any = ['/home/oper/opera'];
+  curURL: any;
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    this.curURL = state.url;
+    const menuTree = JSON.parse(sessionStorage.getItem('menuTree'));
+    this.treeToArray(menuTree);
+    for (let i = 0; i < this.urlList.length; i++) {
+      if (this.urlList[i] === this.curURL) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  treeToArray(data) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].menuChildrenList) {
+        this.treeToArray(data[i].menuChildrenList);
+      } else {
+        try {
+          let isHave = false;
+          for (let j = 0; j < this.urlList.length; j++) {
+            // console.log(this.urlList[j]);
+            // console.log(data[i].url);
+            if (this.urlList[j] === data[i].url) {
+              isHave = true;
+            }
+          }
+          if (!isHave) {
+            this.urlList.push(data[i].url);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  }
+}

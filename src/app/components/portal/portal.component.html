@@ -1,0 +1,27 @@
+<div id="portal">
+  <nz-layout class="layout">
+    <nz-layout>
+      <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" [hidden]="isCollapsed" style="margin-bottom: 10px;" class="menu_fold">
+        <i nz-icon type="menu-fold" theme="outline" ></i>
+      </button>
+      <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" [hidden]="!isCollapsed"  style="margin-bottom: 10px;" class="menu_unfold">
+        <i nz-icon type="menu-unfold" theme="outline"></i>
+      </button>
+      <nz-sider [nzWidth]="240" style="background:#fff" *ngIf="!isCollapsed">
+        <app-portal-menu-side></app-portal-menu-side>
+      </nz-sider>
+      <nz-layout style="padding:0 24px" class="layout_box">
+        <router-outlet></router-outlet>
+        <nz-back-top></nz-back-top>
+      </nz-layout>
+    </nz-layout>
+  </nz-layout>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-enterprise-center',
+  templateUrl: './enterprise-center.component.html',
+  styleUrls: ['./enterprise-center.component.css']
+})
+export class EnterpriseCenterComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

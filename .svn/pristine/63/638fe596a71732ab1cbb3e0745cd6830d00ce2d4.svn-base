@@ -1,0 +1,169 @@
+import {Component, OnInit} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {CommonUrlService} from '../../../service/common-url.service';
+import {CommonService} from '../../../service/common.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+  validateForm: FormGroup;
+  countDownNum = 60;
+  timerFlag = false;
+  phoneErrFlag = false;
+  checkCaptchaFlag = false;
+  loginErrFlag = false;
+  phoneErrorMsg = '请输入正确的手机号！';
+  captchaErrorMsg = '请输入正确的验证码！';
+  loginErrMsg = '';
+  imgCaptchaUrl = '';
+
+  submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+    for (const i in this.validateForm.controls) {
+      const status = this.validateForm.controls[i].status;
+      if (status === 'INVALID') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  constructor(private fb: FormBuilder,
+              private http: HttpClient,
+              private router: Router,
+              public url: CommonUrlService,
+              private common: CommonService) {
+  }
+
+  ngOnInit(): void {
+    // this.getImgCaptcha();
+    this.validateForm = this.fb.group({
+      user: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+      // imgcaptcha: [null, [Validators.required]],
+    });
+  }
+
+
+  // 登录
+  login() {
+    if (!this.submitForm()) {
+      return;
+    }
+    this.loginErrMsg = '';
+    const user = this.validateForm.controls.user.value;
+    const password = this.validateForm.controls.password.value;
+    // const imgcaptcha = this.validateForm.controls.imgcaptcha.value;
+    const sendData = {
+      loginName: user,
+      loginPassword: password
+    };
+
+    const sendUrl = this.url.commonUrl + '/ajaxLogin';
+    this.http.post(sendUrl, sendData).subscribe(data => {
+        const resData: any = data;
+        if (resData.code === '2000') {
+          const dataList = JSON.parse(resData.dataList[0]);
+          const defalutPwdUser = dataList.defalutPwdUser;
+          const menuTree = dataList.menuTree;
+          const token = dataList.token;
+          sessionStorage.setItem('userName', sendData.loginName);
+          sessionStorage.setItem('defalutPwdUser', defalutPwdUser);
+          sessionStorage.setItem('menuTree', JSON.stringify(menuTree));
+          sessionStorage.setItem('token', token);
+          if (defalutPwdUser) {
+            this.router.navigate(['/home/oper/updatePwd']);
+          } else {
+            this.router.navigate(['/home/oper/opera']);
+          }
+        } else {
+          this.loginErrFlag = true;
+          this.loginErrMsg = resData.message;
+        }
+      },
+      error => {
+        console.log(error);
+      });
+
+
+    // const resData = this.common.login(sendData);
+    // if (resData.code === '2000') {
+    //   const dataList = JSON.parse(resData.dataList[0]);
+    //   const defalutPwdUser = dataList.defalutPwdUser;
+    //   const menuTree = dataList.menuTree;
+    //   const token = dataList.token;
+    //   sessionStorage.setItem('defalutPwdUser', defalutPwdUser);
+    //   sessionStorage.setItem('menuTree', JSON.stringify(menuTree));
+    //   sessionStorage.setItem('token', token);
+    //   if (defalutPwdUser) {
+    //     this.router.navigate(['/home/oper/updatePwd']);
+    //   } else {
+    //     this.router.navigate(['/home/oper/opera']);
+    //   }
+    // } else {
+    //   this.loginErrFlag = true;
+    //   this.loginErrMsg = resData.message;
+    // }
+  }
+
+
+  // 倒计时
+  countDown() {
+    this.timerFlag = true;
+    const countTimer = setInterval(() => {
+      --this.countDownNum;
+      if (this.countDownNum === 0) {
+        this.timerFlag = false;
+        this.countDownNum = 60;
+        clearInterval(countTimer);
+      }
+    }, 1000);
+  }
+
+  // 手机号校验
+  checkPhone() {
+    const varlue = this.validateForm.controls.phone.value;
+    if (this.validateForm.get('phone').dirty) {
+      if (!this.common.reqPhone(varlue)) {
+        this.phoneErrFlag = true;
+        return false;
+      }
+      this.phoneErrFlag = false;
+      return true;
+    }
+  }
+
+  // 验证码校验
+  checkCaptcha() {
+    if (this.validateForm.get('captcha').dirty) {
+      const captcha = this.validateForm.controls.captcha.value;
+      if (!captcha) {
+        this.checkCaptchaFlag = true;
+        return false;
+      }
+      this.checkCaptchaFlag = false;
+      return true;
+    }
+
+  }
+
+  // 登录校验
+  loginCheck() {
+    const checkPhoneFlag = this.checkPhone();
+    const checkCaptchaFlag = this.checkCaptcha();
+    return checkPhoneFlag && checkCaptchaFlag;
+  }
+}
+

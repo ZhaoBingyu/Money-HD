@@ -1,0 +1,95 @@
+
+.open_account {
+  background: url("../../../../assets/img/forgetBG.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.step_box {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.steps-action {
+  text-align: center;
+  margin-top: 24px;
+}
+
+button {
+  margin-right: 24px;
+}
+
+.title {
+  width: 100%;
+  height: auto;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.title h3 {
+  display: inline-block;
+  color: rgba(230, 0, 18, 1);
+  font-size: 36px;
+  font-weight: bolder;
+  border-bottom: 2px solid rgba(230, 0, 18, 1);
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .has-error .ant-form-explain {
+  text-align: left;
+}
+
+i[nz-icon] {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+
+::ng-deep .ant-divider-horizontal.ant-divider-with-text-left.ant-divider-dashed {
+  font-weight: bolder;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.note ol li {
+  text-align: justify;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.ant-cascader-picker {
+  width: 300px;
+}
+
+.change-options {
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+::ng-deep .ant-cascader-picker {
+  width: 100% !important;
+}
+
+.login_modal_err_msg {
+  text-align: center;
+}
+
+::ng-deep .ant-input-disabled {
+  color: rgba(0, 0, 0, 0.8);
+}

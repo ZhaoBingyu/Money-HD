@@ -1,0 +1,165 @@
+<div id="busRole" appFixHeight>
+  <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <div nz-col nzSpan="24" nzOffset="0">
+      <div class="form_box">
+        <nz-divider nzText="申购查询" nzOrientation="left" class="title"></nz-divider>
+        <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
+          <div nz-row>
+            <div nz-col nzSpan="12" nzOffset="0">
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24">开始日期</nz-form-label>
+                <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <nz-date-picker formControlName="startDate" [(ngModel)]="date"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12" nzOffset="0">
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24">结束日期</nz-form-label>
+                <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <nz-date-picker formControlName="endDate" [(ngModel)]="date"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <!--<div nz-row>-->
+          <!--<div nz-col nzSpan="12" nzOffset="0">-->
+          <!--<nz-form-item>-->
+          <!--<nz-form-label [nzSm]="8" [nzXs]="24">产品</nz-form-label>-->
+          <!--<nz-form-control [nzSm]="16" [nzXs]="24">-->
+          <!--<nz-select  nzAllowClear  formControlName="fgs" nzPlaceHolder="请选择产品">-->
+          <!--<nz-option *ngFor="let data of productList" [nzValue]="data.enumCode"-->
+          <!--[nzLabel]="data.enumName"></nz-option>-->
+          <!--</nz-select>-->
+          <!--</nz-form-control>-->
+          <!--</nz-form-item>-->
+          <!--</div>-->
+          <!--</div>-->
+          <div class="btn_box query_btn_box">
+            <button nz-button nzType="primary" nzGhost (click)="delayQuerySubmit()">查询
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="resetBtn()">重置</button>
+          </div>
+        </form>
+      </div>
+      <nz-divider></nz-divider>
+      <div class="result_table">
+        <div id="exportableTable" class="hidden-table" style="margin-bottom: 30px" [hidden]="queryLoading">
+          <!--<nz-table #nzTable [nzData]="userRoleList" [nzShowPagination]="false"-->
+          <!--nzBordered-->
+          <!--[nzScroll]="{y: '460px' }"-->
+          <!--nzSize="small"-->
+          <!--[nzFrontPagination]="false"-->
+          <!--class="excel_table">-->
+          <!--<thead (nzSortChange)="sort($event)" nzSingleSort>-->
+          <!--<tr class="resize_thead">-->
+          <!--<th>申购金额（元）</th>-->
+          <!--<th>交易状态</th>-->
+          <!--<th>订单生成时间</th>-->
+          <!--<th>交易单号</th>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody class="resize_tboday">-->
+          <!--<tr *ngFor="let data of nzTable.data">-->
+          <!--<td>{{data.amount | currency: 'CNY':'symbol-narrow'}}</td>-->
+          <!--<td>{{data.statusText}}</td>-->
+          <!--<td>{{data.createDate}} {{data.createTime}}</td>-->
+          <!--<td>{{data.orderNo}}</td>-->
+          <!--</tr>-->
+          <!--</tbody>-->
+          <!--</nz-table>-->
+
+          <nz-table #nestedTable [nzData]="userRoleList"
+                    [nzShowPagination]="false"
+                    [nzScroll]="{y: '460px' }"
+                    nzSize="small"
+                    [nzFrontPagination]="false">
+            <thead>
+            <tr>
+              <th nzWidth='67px' nzShowExpand></th>
+              <th nzWidth='100px'>产品名称</th>
+              <th nzWidth='100px'>企业名称</th>
+              <th nzWidth='100px'>产品银行编码</th>
+              <th nzWidth='100px'>产品编码</th>
+              <th nzWidth='100px'>订单号</th>
+              <!--<th nzWidth='100px'>申购金额</th>-->
+              <!--<th nzWidth='100px'>创建日期</th>-->
+              <!--<th nzWidth='100px'>创建时间</th>-->
+              <!--<th nzWidth='100px'>申购状态</th>-->
+              <!--<th nzWidth='100px'>申购状态描述</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+              <tr>
+                <td nzShowExpand [(nzExpand)]="data.expand"></td>
+                <td>{{data.companyNo}}</td>
+                <td>{{data.companyName}}</td>
+                <td>{{data.bankCode}}</td>
+                <td>{{data.productCode}}</td>
+                <td>{{data.orderNo}}</td>
+                <!--<td>{{data.amount}}</td>-->
+                <!--<td>{{data.createDate}}</td>-->
+                <!--<td>{{data.createTime}}</td>-->
+                <!--<td>{{data.status}}</td>-->
+                <!--<td>{{data.statusDes}}</td>-->
+              </tr>
+              <tr [nzExpand]="data.expand">
+                <td></td>
+                <td colspan="5">
+                  <nz-table #innerTable [nzData]="nestedTable.data" nzSize="middle" [nzShowPagination]="false">
+            <thead>
+            <tr>
+              <th nzWidth='100px'>申购金额</th>
+              <th nzWidth='100px'>创建日期</th>
+              <th nzWidth='100px'>创建时间</th>
+              <th nzWidth='100px'>申购状态</th>
+              <th nzWidth='100px'>申购状态描述</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of innerTable.data">
+              <td>{{data.amount}}</td>
+              <td>{{data.createDate}}</td>
+              <td>{{data.createTime}}</td>
+              <td>{{data.statusText}}</td>
+              <td>{{data.statusDes}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+          </td>
+          </tr>
+          </ng-template>
+          </tbody>
+          </nz-table>
+        </div>
+        <div class="example" [hidden]="!queryLoading">
+          <nz-spin [nzSize]="'large'" nzTip='Loading...'></nz-spin>
+        </div>
+        <div class="page_box" [hidden]="userRoleList.length<1">
+          <nz-pagination [nzPageIndex]="pageVo.currentPage"
+                         [nzTotal]="pageVo.totalCount"
+                         nzShowQuickJumper (nzPageIndexChange)="querySubmit()">
+          </nz-pagination>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+
+
+  <nz-modal [(nzVisible)]="isVisible"
+            nzTitle="错误"
+            nzOkText="确定"
+            nzCancelText="取消"
+            (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p class="login_modal_err_msg">
+      <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+      该企业客户未登入或者登入已失效,请重新登入！！
+    </p>
+  </nz-modal>
+
+
+</div>
+

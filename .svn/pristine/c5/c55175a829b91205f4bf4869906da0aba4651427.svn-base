@@ -1,0 +1,61 @@
+:host ::ng-deep strong {
+  color: rgba(64, 64, 64, 0.6);
+}
+
+:host ::ng-deep .layout_box > .ng-star-inserted {
+  background: #fff;
+}
+
+:host ::ng-deep .ant-steps-icon.ng-star-inserted {
+  background: none;
+}
+
+:host ::ng-deep .slick-dots.ng-star-inserted {
+  background: none;
+}
+
+:host ::ng-deep .ant-back-top.ng-star-inserted {
+  background: none;
+}
+
+:host ::ng-deep .ant-back-top-content.ng-star-inserted {
+  background: none;
+}
+
+.login_modal_err_msg {
+  text-align: center;
+}
+
+.login_modal_err_msg i {
+  font-size: 32px;
+  margin-right: 30px;
+}
+
+:host ::ng-deep .ant-btn-primary {
+  background: #e60012;
+}
+
+.menu_fold {
+  position: fixed;
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+  left: 238px;
+  top: 64px;
+  width: 21.97px;
+  z-index: 999;
+}
+
+.menu_unfold {
+  position: fixed;
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+  left: 0px;
+  top: 64px;
+  width: 21.97px;
+  z-index: 999;
+}
+
+.menu_fold:hover,
+.menu_unfold:hover {
+  font-size: 16px;
+}

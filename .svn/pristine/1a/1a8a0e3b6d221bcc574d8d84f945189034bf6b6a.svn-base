@@ -1,0 +1,31 @@
+<div id="header">
+  <a href="javascript:;">
+    <div class="logo"></div>
+  </a>
+  <ul nz-menu [nzMode]="'horizontal'" class="menu">
+    <li nz-menu-item (click)="changeView('moneyHDHome')">首页</li>
+    <li nz-menu-item (click)="changeView('enterpriseCenter')">企业中心</li>
+    <li nz-menu-item>
+      <div>
+        <i nz-icon type="login" theme="outline" (click)="changeView('login')"></i>登录</div>
+    </li>
+    <li nz-menu-item>
+      <div>
+        <i nz-icon type="edit" theme="outline"  (click)="changeView('register')"></i>注册
+      </div>
+    </li>
+    <li nz-menu-item>
+      <div>
+        <i nz-icon type="logout" theme="outline" (click)="logout()"></i>退出
+      </div>
+    </li>
+    <li nz-menu-item>客服电话:4000-232-636</li>
+  </ul>
+
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="错误" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p class="login_modal_err_msg">
+      <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+      您尚未登录，请先登录！
+    </p>
+  </nz-modal>
+</div>

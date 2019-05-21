@@ -1,0 +1,10 @@
+import {ajaxSubmit} from './util';
+
+// 运营管理:查询支付交易列表
+function selectPayDetailList(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectPayDetailList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {selectPayDetailList};

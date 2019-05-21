@@ -1,0 +1,48 @@
+<div id="busRole" appFixHeight>
+  <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <div nz-col nzSpan="24" nzOffset="0">
+      <nz-divider nzDashed [nzText]="text4" nzOrientation="left">
+        <ng-template #text4>
+          <span style="font-weight: bolder">对公账户</span>
+        </ng-template>
+      </nz-divider>
+      <div class="result_table">
+        <div id="exportableTable" class="hidden-table" style="margin-bottom: 30px" [hidden]="queryLoading">
+          <nz-table #nzTable [nzData]="userRoleList" [nzShowPagination]="false"
+                    nzBordered
+                    [nzScroll]="{y: '460px' }"
+                    nzSize="small"
+                    [nzFrontPagination]="false"
+                    class="excel_table">
+            <thead (nzSortChange)="sort($event)" nzSingleSort>
+            <tr class="resize_thead">
+              <th nzWidth="100px">收益日期</th>
+              <th nzWidth="100px">产品名称</th>
+              <th nzWidth="100px">份额</th>
+              <th nzWidth="100px">份额</th>
+            </tr>
+            </thead>
+            <tbody class="resize_tboday">
+            <tr *ngFor="let data of nzTable.data">
+              <td>{{data.test}}</td>
+              <td>{{data.test}}</td>
+              <td>{{data.test}}</td>
+              <td>{{data.test}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </div>
+        <div class="example" [hidden]="!queryLoading">
+          <nz-spin [nzSize]="'large'" nzTip='Loading...'></nz-spin>
+        </div>
+        <!--<div class="page_box">-->
+        <!--<nz-pagination [nzPageIndex]="pageVo.currentPage"-->
+        <!--[nzTotal]="pageVo.totalPages"-->
+        <!--nzShowQuickJumper (nzPageIndexChange)="querySubmit()">-->
+        <!--</nz-pagination>-->
+        <!--</div>-->
+      </div>
+    </div>
+  </nz-content>
+</div>
+

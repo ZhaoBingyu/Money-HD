@@ -1,0 +1,79 @@
+#money_hd_home {
+  background: url("../../../../assets/img/forgetBG.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#money_hd_home [nz-carousel-content] {
+  text-align: center;
+  /*max-height: 160px;*/
+  /*line-height: 160px;*/
+  background: #364d79;
+  color: #fff;
+  overflow: hidden;
+}
+
+.title {
+  width: 100%;
+  height: auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.title h3 {
+  display: inline-block;
+  color: rgba(230, 0, 18, 1);
+  font-size: 36px;
+  font-weight: bolder;
+  border-bottom: 2px solid rgba(230, 0, 18, 1);
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .ant-card-hoverable:hover {
+  box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.09);
+}
+
+.product_list > div {
+  margin-bottom: 30px;
+}
+
+.product_info {
+  border-right: 1px dashed rgba(232, 232, 232, 1);
+}
+
+.apply_box {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.apply_box button {
+  width: 100%;
+}
+
+.apply_box button:hover {
+  font-weight: bolder;
+  font-size: 15px;
+}
+
+.product_rate {
+  color: #8c8c8c;
+  font-weight: bolder;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.product_rate span {
+  color: rgba(230, 0, 18, 1);
+  font-size: 36px;
+  font-weight: bolder;
+}
+
+.product_name {
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 12px;
+}

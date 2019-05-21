@@ -1,0 +1,17 @@
+<div *ngFor="let data of menuArray">
+  <li *ngIf="!data.menuChildrenList"
+      nz-menu-item [id]="data.menuName"
+      (click)="changeRouter(data)"
+      [nzSelected]="data.active">
+    <span title><i nz-icon type="tag"></i> {{data.menuName}}</span>
+  </li>
+
+  <li *ngIf="data.menuChildrenList"
+      nz-submenu [id]="data.menuName"
+      [(nzOpen)]="data.active">
+    <span title><i nz-icon type="tags"></i> {{data.menuName}}</span>
+    <app-treeview [menuArray]="data.menuChildrenList"></app-treeview>
+  </li>
+
+</div>
+

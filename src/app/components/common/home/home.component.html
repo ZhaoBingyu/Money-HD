@@ -1,0 +1,50 @@
+<div id="home">
+  <nz-layout>
+    <nz-header>
+      <app-header></app-header>
+    </nz-header>
+    <nz-content>
+      <app-content></app-content>
+    </nz-content>
+    <nz-footer>
+      <app-footer></app-footer>
+    </nz-footer>
+  </nz-layout>
+</div>
+
+
+
+
+
+<!--未登录-->
+<nz-modal [(nzVisible)]="isLoginVisible" nzTitle="错误"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleLoginCancel()" (nzOnOk)="handleLoginOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    {{errMsg}}
+  </p>
+</nz-modal>
+
+<!--未开户-->
+<nz-modal [(nzVisible)]="isOpenAccountVisible" nzTitle="错误" (nzOnCancel)="handleOpenAccountCancel()"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnOk)="handleOpenAccountOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    {{errMsg}}
+  </p>
+</nz-modal>
+
+<!--一般性错误-->
+<nz-modal [(nzVisible)]="isErrVisible" nzTitle="错误"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleErrCancel()" (nzOnOk)="handleErrOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    {{errMsg}}
+  </p>
+</nz-modal>

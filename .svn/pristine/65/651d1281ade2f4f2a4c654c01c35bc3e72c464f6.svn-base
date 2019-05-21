@@ -1,0 +1,28 @@
+import {Injectable} from '@angular/core';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {CommonService} from '../service/common.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LoginGuard implements CanActivate {
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    const resultData = this.common.validateLogin();
+    try {
+      if (resultData.code === '0001') {
+        return true;
+      } else {
+        this.router.navigate(['/login']);
+        return false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}

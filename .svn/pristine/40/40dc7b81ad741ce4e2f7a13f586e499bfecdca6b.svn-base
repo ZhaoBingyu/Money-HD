@@ -1,0 +1,49 @@
+import {Component, OnInit} from '@angular/core';
+import {CommonService} from '../../../service/common.service';
+import {Router} from '@angular/router';
+
+@Component({
+  selector: 'app-money-hd-home',
+  templateUrl: './money-hd-home.component.html',
+  styleUrls: ['./money-hd-home.component.css']
+})
+export class MoneyHdHomeComponent implements OnInit {
+
+  /**
+   ** 理财产品列表查询
+   ** 理财产品List
+   *record  循环体
+   *bankCode  银行编码
+   *productCode  产品编码
+   *productName  产品名称
+   *imgUrl  产品图片
+   *sevenDaysOfYield  7日年华收益率
+   *perMillionIncome  每万分收益
+   *netWorthDate  净值日期
+   **/
+  public productList = [];
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  ngOnInit() {
+    this.queryProductList();
+  }
+
+
+  queryProductList() {
+    const sendData = {
+      channelNo: sessionStorage.getItem('channelNo')
+    };
+    const resData = this.common.yql_fundQueryProductListInfo(sendData);
+    this.productList = resData.response_body.record;
+  }
+
+
+  applyForPurchase(data) {
+    this.common.setRouterJump(data);
+    sessionStorage.setItem('inputData', JSON.stringify(data));
+    this.router.navigate(['/home/applyForPurchase']);
+  }
+
+}

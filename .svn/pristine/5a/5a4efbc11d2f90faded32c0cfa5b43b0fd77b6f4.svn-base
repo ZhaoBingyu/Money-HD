@@ -1,0 +1,72 @@
+<div id="footer">
+  <!--<div nz-row class="item_1">-->
+    <!--<div nz-col [nzXs]="{ span: 5, offset: 1 }" [nzLg]="{ span: 6, offset: 2 }">-->
+      <!--<div class="menu_title">快速入口</div>-->
+      <!--<ul>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="intrYQL" (click)="goRouter($event)">银企联介绍</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="busChoose" (click)="goRouter($event)">功能列表</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="queryCustInfo" (click)="goRouter($event)">测试资料入网</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="queryDockResult" (click)="goRouter($event)">查询对接结果</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="applyOnLine" (click)="goRouter($event)">申请上线</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <!--<div nz-col [nzXs]="{ span: 11, offset: 1 }" [nzLg]="{ span: 6, offset: 2 }">-->
+      <!--<div class="menu_title">开发资源</div>-->
+      <!--<ul>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="downloadDoc" (click)="goRouter($event)">文档下载</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="downloadDemo" (click)="goRouter($event)">DEMO下载</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="downloadTool" (click)="goRouter($event)">小工具下载</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;" id="downloadBankInfo" (click)="goRouter($event)">银企直连开通指导</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <!--<div nz-col [nzXs]="{ span: 5, offset: 1 }" [nzLg]="{ span: 6, offset: 2 }">-->
+      <!--<div class="menu_title">联系我们</div>-->
+      <!--<ul>-->
+        <!--<li>-->
+          <!--<a href="https://www.shufafin.com/gywm/about_us.html" target="_blank">关于我们</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="http://www.yonyou.com/" target="_blank">用友集团官网</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;">联系电话:152 0162 6799</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;"> 商业合作: gf_shufa@yonyou.com</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a href="javascript:;"> 地址：北京海淀区北清路68号用友产业园中区</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+  <div nz-row class="item_2">
+    Copyright © 2018 用友数法金融服务（天津）有限公司版权所有 津ICP备18005424号 京公安网备11010802027469
+  </div>
+
+
+  <!--<nz-modal [(nzVisible)]="isVisible" nzTitle="错误" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">-->
+    <!--<p class="login_modal_err_msg">-->
+      <!--<i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>-->
+      <!--您尚未登录，请先登录！-->
+    <!--</p>-->
+  <!--</nz-modal>-->
+</div>

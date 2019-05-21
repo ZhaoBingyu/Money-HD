@@ -1,0 +1,72 @@
+<div id="busRole" appFixHeight>
+  <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <div nz-col nzSpan="20" nzOffset="2">
+      <nz-divider nzDashed [nzText]="text4" nzOrientation="left">
+        <ng-template #text4>
+          <span style="font-weight: bolder">我的资产</span>
+        </ng-template>
+      </nz-divider>
+      <div class="result_table">
+        <div id="exportableTable" class="hidden-table" style="margin-bottom: 30px" [hidden]="queryLoading">
+          <div nz-row *ngFor="let item of productList" class="product_list">
+            <div nz-col [nzSpan]="20" [nzOffset]="2">
+              <nz-card nzHoverable>
+                <div nz-row nzGutter="32">
+                  <div nz-col [nzSpan]="18" class="product_info">
+                    <div class="bank_name">
+                      <div>
+                        <div class="product_name">
+                          {{item.productName}}
+                        </div>
+                      </div>
+                      <div nz-row style="margin-bottom: 10px">
+                        <div class="eye_look" [hidden]="!item.eyeLookFlag" (click)="changeEyeLookFlag(item)">查看详情 &nbsp;&nbsp;<i
+                          nz-icon type="eye" theme="outline"></i></div>
+                        <div class="eye_look" [hidden]="item.eyeLookFlag" (click)="changeEyeLookFlag(item)">隐藏详情 &nbsp;&nbsp;<i
+                          nz-icon type="eye-invisible" theme="outline"></i></div>
+                      </div>
+                      <div nz-row [hidden]="item.eyeLookFlag">
+                        <div nz-col [nzSpan]="12">
+                          <div>持有金额</div>
+                          <div class="money_data">{{item.availableShare | currency: 'CNY':'symbol-narrow'}}</div>
+                        </div>
+                        <div nz-col [nzSpan]="12">
+                          <div>持有份数</div>
+                          <div class="money_data">{{item.availableShare}}</div>
+                        </div>
+                      </div>
+                      <nz-divider nzDashed></nz-divider>
+                      <div nz-row>
+                        <div nz-col [nzSpan]="12">
+                          <button nz-button nzType="dashed" (click)="goApplyPurchase(item)">再次申购</button>
+                        </div>
+                        <div nz-col [nzSpan]="12">
+                          <button nz-button nzType="dashed" (click)="goRedeemPurchase(item)">赎回</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div nz-col [nzSpan]="6" class="apply_box">
+                    <img [src]="item.imgUrl" alt="" style="width: 100%;position: relative;top: -40px;">
+                    <button nz-button nzType="primary">持有中</button>
+                  </div>
+                </div>
+              </nz-card>
+            </div>
+          </div>
+        </div>
+        <div class="example" [hidden]="!queryLoading">
+          <nz-spin [nzSize]="'large'" nzTip='Loading...'></nz-spin>
+        </div>
+
+        <!--<div class="page_box">-->
+        <!--<nz-pagination [nzPageIndex]="pageVo.currentPage"-->
+        <!--[nzTotal]="pageVo.totalPages"-->
+        <!--nzShowQuickJumper (nzPageIndexChange)="querySubmit()">-->
+        <!--</nz-pagination>-->
+        <!--</div>-->
+      </div>
+    </div>
+  </nz-content>
+</div>
+

@@ -1,0 +1,28 @@
+import {ajaxSubmit} from './util';
+
+// 权限信息管理:增加按钮
+function addBtn(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/addBtn';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:删除按钮
+function delBtn(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/delBtn';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 权限信息管理:修改按钮
+function updateBtn(obj) {
+  const sendUrl = this.url.commonUrl + '/shiro/updateBtn';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {
+  addBtn,
+  delBtn,
+  updateBtn
+};

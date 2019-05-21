@@ -1,0 +1,109 @@
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule, PreloadAllModules} from '@angular/router';
+import {HomeComponent} from './components/common/home/home.component';
+import {PortalComponent} from './components/portal/portal.component';
+import {LoginGuard} from './guard/login.guard';
+import {RouterGuard} from './guard/router.guard';
+
+
+const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'}, // 理财产品首页
+  {
+    path: 'home', component: HomeComponent,
+    // canActivate: [LoginGuard],
+    children: [
+      {path: '', redirectTo: 'moneyHDHome', pathMatch: 'full'},
+      {
+        // 理财产品首页 moneyHDHome
+        path: '',
+        loadChildren: './components/view/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      },
+
+      {
+        // 登录 login
+        path: '',
+        loadChildren: './components/view/login/login.module#LoginModule',
+      },
+      // {
+      //   // 注册 register
+      //   path: '',
+      //    loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      // },
+
+      // {
+      //   // 开户 openAccount
+      //   path: '',
+      //    loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      // },
+
+      // {
+      //   // 忘记密码 findPassword
+      //   path: '',
+      //     loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      // },
+
+      // {
+      //   // 申购 applyForPurchase
+      //   path: '',
+      //    loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      // },
+
+      // {
+      //   // 开户 openAccount
+      //   path: '',
+      //    loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+      // },
+      {
+        path: 'enterpriseCenter', component: PortalComponent, // 企业中心
+        children: [
+          {path: '', redirectTo: 'myAssets', pathMatch: 'full'}, // 我的资产
+          // {
+          //   // 我的资产 myAssets
+          //   path: '',
+          //    loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+          // },
+
+          // {
+          //   // 交易记录 tradeRecord
+          //   path: '',
+          //     loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+          // },
+
+          // {
+          //   // 企业信息管理 accountInfo
+          //   path: '',
+          //     loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+          // },
+
+          // {
+          //   // 理财账户管理 accountManagement
+          //   path: '',
+          //     loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+          // },
+
+          // {
+          //   // 对公账户管理 publicAccountMangement
+          //   path: '',
+          //     loadChildren: './components/money-hd-home/money-hd-home.module#MoneyHdHomeModule',
+
+          // },
+
+
+        ]
+      },
+      {
+        // 404
+        path: '',
+        loadChildren: './components/view/page-not-fond/page-not-fond.module#PageNotFondModule',
+      },
+    ]
+  },
+
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {
+}

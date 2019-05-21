@@ -1,0 +1,630 @@
+<div class="open_account" appFixHeight>
+  <div nz-row>
+    <div nz-col [nzSpan]="20" [nzPush]="2">
+      <div class="step_box">
+        <nz-steps [nzCurrent]="current">
+          <nz-step nzTitle="验证手机号码"></nz-step>
+          <nz-step nzTitle="填写结算账户"></nz-step>
+          <nz-step nzTitle="完善企业信息"></nz-step>
+          <nz-step nzTitle="开户结果"></nz-step>
+        </nz-steps>
+
+        <div class="steps-content" nz-row>
+          <div nz-col [nzSpan]="20" [nzPush]="2">
+            <div class="step_sub_content step_1">
+              <div class="title">
+                <h3>验证手机</h3>
+              </div>
+              <form nz-form [formGroup]="validateForm">
+                <div nz-row>
+                  <div nz-col [nzSpan]="16" [nzPush]="3">
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="userName" nzRequired>
+                        手机号
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <input nz-input type="text" formControlName="phone"
+                               maxlength="11"
+                               (blur)="checkPhone('phone')"
+                               oninput="value=value.replace(/[^\d]/g,'')">
+                        <nz-form-explain
+                          style="color: #f5222d;text-align: left"
+                          *ngIf="phoneErrFlag || validateForm.get('phone').dirty && validateForm.get('phone').errors">
+                          &nbsp;{{phoneErrorMsg}}
+                        </nz-form-explain>
+                      </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="code" nzRequired>
+                        验证码
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <div nz-row [nzGutter]="12">
+                          <div nz-col [nzSpan]="14">
+                            <input nz-input formControlName="code" id="code" placeholder="验证码"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="8"
+                                   (blur)="checkCaptcha()"
+                            >
+                          </div>
+                          <div nz-col [nzSpan]="10" class="captcha_box">
+                            <button style="width: 100%" id="getCaptcha"
+                                    nz-button *ngIf="!timerFlag"
+                                    [nzType]="'primary'"
+                                    (click)="getCaptcha()">获取验证码
+                            </button>
+                            <button style="width: 100%"
+                                    [nzType]="'primary'"
+                                    nz-button *ngIf="timerFlag">{{countDownNum}}s
+                            </button>
+                          </div>
+                        </div>
+                        <nz-form-explain
+                          *ngIf="validateForm.get('code').dirty && validateForm.get('code').errors">
+                          请输入验证码！
+                        </nz-form-explain>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div>
+              <div class="step_sub_content step_2" style="display: none" nz-col [nzSpan]="20" [nzPush]="2">
+                <div class="title">
+                  <h3>填写结算账户</h3>
+                </div>
+                <form nz-form [formGroup]="validateForm">
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="companyName" nzRequired>
+                      结算账户帐号
+                    </nz-form-label>
+                    <nz-form-control [nzSm]="12" [nzXs]="24">
+                      <nz-select nzAllowClear formControlName="accno" nzPlaceHolder="请选择结算账户帐号"
+                                 (ngModelChange)="selectBank()">
+                        <nz-option *ngFor="let data of accountNoList" [nzValue]="data.accountNo"
+                                   [nzLabel]="data.accountNo"></nz-option>
+                      </nz-select>
+                      <!--<input nz-input formControlName="accno"-->
+                      <!--placeholder=""-->
+                      <!--oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"-->
+                      <!--maxlength="32">-->
+                      <nz-form-explain
+                        *ngIf="validateForm.get('accno').dirty && validateForm.get('accno').errors">
+                        请选择结算账户帐号！
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                </form>
+                <nz-form-item>
+                  <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="openbankno">
+                    结算账户开户行行号
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="12" [nzXs]="24">
+                    <input nz-input
+                           [(ngModel)]="accountInfo.accountBankNo"
+                           disabled
+                           oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                           maxlength="32">
+                    <!--<nz-form-explain-->
+                    <!--*ngIf="validateForm.get('openbankno').dirty && validateForm.get('openbankno').errors">-->
+                    <!--请输入结算账户开户行行号！-->
+                    <!--</nz-form-explain>-->
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="accname">
+                    结算账户户名
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="12" [nzXs]="24">
+                    <input nz-input
+                           [(ngModel)]="accountInfo.accountName"
+                           disabled
+                           oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                           maxlength="32">
+                    <!--<nz-form-explain-->
+                    <!--*ngIf="validateForm.get('accname').dirty && validateForm.get('accname').errors">-->
+                    <!--请输结算账户户名！-->
+                    <!--</nz-form-explain>-->
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="openbankname">
+                    结算账户开户行行名
+                  </nz-form-label>
+                  <nz-form-control [nzSm]="12" [nzXs]="24">
+                    <input nz-input
+                           disabled
+                           [(ngModel)]="accountInfo.accountBankName"
+                           oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                           maxlength="32">
+                    <!--<nz-form-explain-->
+                    <!--*ngIf="validateForm.get('openbankname').dirty && validateForm.get('openbankname').errors">-->
+                    <!--请输入结算账户开户行行名！-->
+                    <!--</nz-form-explain>-->
+                  </nz-form-control>
+                </nz-form-item>
+
+
+              </div>
+              <div class="step_sub_content step_3" style="display: none">
+                <div class="title">
+                  <h3>完善企业信息</h3>
+                </div>
+                <form nz-form [formGroup]="validateForm">
+                  <div class="info_box">
+                    <nz-divider nzText="完善信息" nzOrientation="left" nzDashed></nz-divider>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="busZipCode" nzRequired>
+                            登录号
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input formControlName="userNo"
+                                   oninput="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                                   maxlength="32">
+                            <nz-form-explain
+                              *ngIf="validateForm.get('userNo').dirty && validateForm.get('userNo').errors">
+                              请输入登录号！
+                            </nz-form-explain>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="busZipCode" nzRequired>
+                            法人手机号
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input formControlName="corpPhone"
+                                   oninput="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                                   (blur)="checkPhone('corpPhone')"
+                                   maxlength="11">
+                            <nz-form-explain
+                              style="text-align: left;color: rgba(230,0,18,1)"
+                              *ngIf="phoneCorpErrFlag || validateForm.get('corpPhone').dirty && validateForm.get('corpPhone').errors">
+                              请输入正确的法人手机号！
+                            </nz-form-explain>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div nz-row>
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24">
+                        是否为法人
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <nz-radio-group [(ngModel)]="isLeagalMan">
+                          <label nz-radio nzValue="1">是</label>
+                          <label nz-radio nzValue="0">否</label>
+                        </nz-radio-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24">
+                        联系人
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <input nz-input [(ngModel)]="contact"
+                               oninput="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                               maxlength="32">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div nz-row>
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24">
+                        推荐人
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <input nz-input [(ngModel)]="introducer"
+                               oninput="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                               maxlength="32">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                      <nz-form-label [nzSm]="11" [nzXs]="24">
+                        推荐人手机号
+                      </nz-form-label>
+                      <nz-form-control [nzSm]="12" [nzXs]="24">
+                        <input nz-input [(ngModel)]="telPhone"
+                               oninput="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                               maxlength="32">
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div>
+                  <div class="info_box">
+                    <nz-divider nzText="基础信息" nzOrientation="left" nzDashed></nz-divider>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="companyName">
+                            企业名称
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.companyName"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('companyName').dirty && validateForm.get('companyName').errors">-->
+                            <!--请输入企业名称！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="orgCode">
+                            组织机构代码
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.companyNo"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('orgCode').dirty && validateForm.get('orgCode').errors">-->
+                            <!--请输入组织机构代码！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="busCode">
+                            营业执照号
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.companyNo"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('busCode').dirty && validateForm.get('busCode').errors">-->
+                            <!--请输入营业执照号！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="busValidate">
+                            营业执照有效期
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <!--<nz-date-picker formControlName="busValidate"-->
+                            <!--&gt;</nz-date-picker>-->
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.businessDate"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('busValidate').dirty && validateForm.get('busValidate').errors">-->
+                            <!--请输入营业执照有效期！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="taxCode">
+                            税务登记证号
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.companyNo"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('taxCode').dirty && validateForm.get('taxCode').errors">-->
+                            <!--请输入税务登记证号！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="authTransPhoneno">
+                            授权办理人联系电话
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.phone"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('authTransPhoneno').dirty && validateForm.get('authTransPhoneno').errors">-->
+                            <!--请输入授权办理人联系电话！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="companyName">
+                            办公地址
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <!--<input nz-input-->
+                            <!--disabled-->
+                            <!--[(ngModel)]="companyBasicInfo.address"-->
+                            <!--oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"-->
+                            <!--maxlength="32">-->
+                            <textarea
+                              disabled
+                              [(ngModel)]="companyBasicInfo.address"
+                              nz-input rows="2"
+                              oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                              placeholder=""></textarea>
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('busAddr').dirty && validateForm.get('busAddr').errors">-->
+                            <!--请输入办公地址！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="busSphere">
+                            经营范围
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                             <textarea
+                               disabled
+                               [(ngModel)]="companyBasicInfo.business"
+                               nz-input rows="2"
+                               oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                               placeholder=""></textarea>
+                            <!--<input nz-input-->
+                            <!--disabled-->
+                            <!--[(ngModel)]="companyBasicInfo.business"-->
+                            <!--oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"-->
+                            <!--maxlength="32">-->
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('busSphere').dirty && validateForm.get('busSphere').errors">-->
+                            <!--请输入经营范围！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="authTransName">
+                            授权办理人姓名
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.agentName"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('authTransName').dirty && validateForm.get('authTransName').errors">-->
+                            <!--请输入授权办理人姓名！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="authTransRegno">
+                            授权办理人证件号码
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.agentNo"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('authTransRegno').dirty && validateForm.get('authTransRegno').errors">-->
+                            <!--请输入授权办理人证件号码！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="authTransValidate">
+                            授权办理人证件有效期
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <!--<nz-date-picker formControlName="authTransValidate"-->
+                            <!--&gt;</nz-date-picker>-->
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.agentDate"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('authTransValidate').dirty && validateForm.get('authTransValidate').errors">-->
+                            <!--请输入授权办理人证件有效期！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="corpRepresentName">
+                            法定代表人姓名
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.corporationName"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('corpRepresentName').dirty && validateForm.get('corpRepresentName').errors">-->
+                            <!--请输入法定代表人姓名！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="corpRepresentRegno">
+                            法定代表人证件号码
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.corporationNo"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('corpRepresentRegno').dirty && validateForm.get('corpRepresentRegno').errors">-->
+                            <!--请输入法定代表人证件号码！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                          <nz-form-label [nzSm]="11" [nzXs]="24" nzFor="corpRepresentValidate">
+                            法定代表人证件有效期
+                          </nz-form-label>
+                          <nz-form-control [nzSm]="12" [nzXs]="24">
+                            <!--<nz-date-picker formControlName="corpRepresentValidate"-->
+                            <!--&gt;</nz-date-picker>-->
+                            <input nz-input
+                                   disabled
+                                   [(ngModel)]="companyBasicInfo.corporationDate"
+                                   oninput="value=value.replace(/(^\s*)|(\s*$)/g,'')"
+                                   maxlength="32">
+                            <!--<nz-form-explain-->
+                            <!--*ngIf="validateForm.get('corpRepresentValidate').dirty && validateForm.get('corpRepresentValidate').errors">-->
+                            <!--请输入法定代表人证件有效期！-->
+                            <!--</nz-form-explain>-->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="step_sub_content step_4" style="display: none">
+                <div class="title">
+                  <h3>开户结果</h3>
+                </div>
+                <p>
+                  开户申请提交成功，<span
+                  style="color: rgba(230,0,18,1);font-size: 18px; font-weight: bolder">{{jumpCount}}</span>
+                  秒钟后将返回首页，若未自动跳转，
+                  请点击“<a href="javascript:;" style="color: rgba(230,0,18,1);font-size: 18px; font-weight: bolder"
+                         (click)="goHome()">这里</a>”
+                  <br>
+                  工商银行会在T+3日内审核，审核通过后，客户即可购买工商银行理财产品，请耐心等待
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="steps-action">
+          <button nz-button nzType="primary" (click)="pre()" *ngIf="current > 0 && current!==3 ">
+            <span>上一步</span>
+          </button>
+          <button nz-button nzType="primary" (click)="next()" *ngIf="current < 2">
+            <span>下一步</span>
+          </button>
+          <button nz-button nzType="primary" (click)="next()" *ngIf="current === 2">
+            <span>提交</span>
+          </button>
+          <!--<button nz-button nzType="primary" (click)="done()" *ngIf="current === 3">-->
+          <!--<span>完成</span>-->
+          <!--</button>-->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <nz-modal nzWidth="900" [nzFooter]="null"
+            nzOkText="确定"
+            nzCancelText="取消"
+            [(nzVisible)]="isVisible" nzTitle=""
+            (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <iframe src="../../../../assets/doc/sms.pdf"
+            width="100%" height="500"
+            frameborder="0"></iframe>
+  </nz-modal>
+
+
+  <nz-modal [(nzVisible)]="isErrVisible" nzTitle="提示"
+            nzOkText="确定"
+            nzCancelText="取消"
+            nzCancelDisabled="true"
+            nzClosable="true"
+            (nzOnCancel)="handleErrCancel()"
+            (nzOnOk)="handleErrOk()">
+    <div class="login_modal_err_msg" style="text-align: center">
+      <div>
+        <i nz-icon type="close-circle" theme="outline" style="color: rgba(230,0,18,1); font-size: 18px"></i>
+        &nbsp;&nbsp;{{errMsg}}
+      </div>
+    </div>
+    <ng-template #modalFooter>
+      <br>
+    </ng-template>
+  </nz-modal>
+
+
+</div>
+
+
+
+<nz-modal [(nzVisible)]="isLoginVisible" nzTitle="错误"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleLoginCancel()" (nzOnOk)="handleLoginOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    该企业客户未登入或者登入已失效,请重新登入！！
+  </p>
+</nz-modal>
+
+<!--一般性错误-->
+<nz-modal [(nzVisible)]="isErrVisible" nzTitle="错误"
+          nzOkText="确定"
+          nzCancelText="取消"
+          (nzOnCancel)="handleErrCancel()" (nzOnOk)="handleErrOk()">
+  <p class="login_modal_err_msg">
+    <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+    {{errMsg}}
+  </p>
+</nz-modal>

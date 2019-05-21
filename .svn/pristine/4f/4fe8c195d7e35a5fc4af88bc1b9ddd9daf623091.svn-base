@@ -1,0 +1,41 @@
+import {ajaxSubmit} from './util';
+
+// 运营管理 证书管理表:新增
+function addCertificateInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/addCertificateInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 证书管理表:删除
+function deleteCertificateInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/deleteCertificateInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 证书管理表:证书修改
+function updateCertificateInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/updateCertificateInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 证书管理表:查询证书list
+function selecTCertificateInfoList(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selecTCertificateInfoList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+//  运营管理 证书管理表:查询单一证书
+function selecTCertificateInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selecTCertificateInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {addCertificateInfo, deleteCertificateInfo, updateCertificateInfo, selecTCertificateInfoList, selecTCertificateInfo};
+
+
+

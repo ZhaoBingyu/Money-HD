@@ -1,0 +1,43 @@
+<div id="header">
+  <a href="javascript:;">
+    <div class="logo"></div>
+  </a>
+  <ul nz-menu [nzMode]="'horizontal'" class="menu">
+    <li nz-menu-item (click)="changeView('moneyHDHome')">首页</li>
+    <li nz-menu-item (click)="changeView('enterpriseCenter')">企业中心</li>
+    <li nz-menu-item (click)="changeView('login')" [hidden]="loginFlag">
+      <div>
+        <i nz-icon type="login" theme="outline"></i>登录
+      </div>
+    </li>
+    <li nz-menu-item (click)="changeView('register')" [hidden]="loginFlag">
+      <div>
+        <i nz-icon type="edit" theme="outline"></i>注册
+      </div>
+    </li>
+    <li nz-menu-item [hidden]="!loginFlag" style="cursor: default">
+      <div style="display: inline-block">
+        <i nz-icon type="user" theme="outline"></i>{{userName}}
+      </div>
+    </li>
+    <li nz-menu-item (click)="logout()" [hidden]="!loginFlag">
+      <div style="display: inline-block">
+        <i nz-icon type="logout" theme="outline"></i>退出
+      </div>
+    </li>
+  </ul>
+  <div class="servicePhone">
+    客服电话:4000-232-636
+  </div>
+
+  <nz-modal [(nzVisible)]="isVisible"
+            nzTitle="错误"
+            nzOkText="确定"
+            nzCancelText="取消"
+            (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p class="login_modal_err_msg">
+      <i nz-icon type="warning" theme="twotone" [twoToneColor]="'#ff0000'" style="font-size: 30px;"></i>
+      您尚未登录，请先登录！
+    </p>
+  </nz-modal>
+</div>

@@ -1,0 +1,189 @@
+import * as $ from 'jquery';
+import {Router} from '@angular/router';
+import {CommonService} from '../common.service';
+
+
+// 手机号校验规则
+function reqPhone(value) {
+  const phone = value;
+  const length = String(phone).length;
+  const phoneReg = /^1[1|2|3|4|5|6|7|8|9|0][0-9]\d{4,8}$/;
+  return length === 11 && phoneReg.test(phone);
+}
+
+//  日期格式化 (日期转字符串)
+function onDateChange(result: Date) {
+  try {
+    const Year = result.getFullYear();
+    const Month = result.getMonth() + 1 < 10 ? '0' + (result.getMonth() + 1) : result.getMonth() + 1;
+    const Date = result.getDate() < 10 ? '0' + result.getDate() : result.getDate();
+    const formatDate = `${Year}${Month}${Date}`;
+    return formatDate;
+  } catch (e) {
+    // console.log(e);
+  }
+}
+
+//  获取日期 (字符串转日期)
+function onStrToDateChange(result) {
+  try {
+    const Year = result.slice(0, 4);
+    const Month = parseInt(result.slice(4, 6)) - 1;
+    const Day = parseInt(result.slice(6));
+    return new Date(Year, Month, Day);
+  } catch (e) {
+    // console.log(e);
+  }
+}
+
+//  码表查询
+function queryEnumList(enumType) {
+  const sendData = {
+    enumType: enumType,
+    enumName: null,
+    enumParentName: null,
+    status: null,
+  };
+  try {
+    const dataList = JSON.parse(this.selectEnumList(sendData).dataList[0]);
+    return dataList;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// 文件下载
+function downloadFile(sendUrl, sendData) {
+  const myDate = new Date();
+  const myTime = myDate.getTime();
+  const year = myDate.getFullYear().toString();
+  const month = (myDate.getMonth() + 1) < 10 ? '0' + (myDate.getMonth() + 1) : myDate.getMonth() + 1;
+  const day = (myDate.getDate()) < 10 ? '0' + (myDate.getDate()) : myDate.getDate();
+  const hours = (myDate.getHours()) < 10 ? '0' + (myDate.getHours()) : myDate.getHours();
+  const minutes = (myDate.getMinutes()) < 10 ? '0' + (myDate.getMinutes()) : myDate.getMinutes();
+  const seconds = (myDate.getSeconds()) < 10 ? '0' + (myDate.getSeconds()) : myDate.getSeconds();
+  const name = year + month + day + hours + minutes + seconds;
+  const req = new XMLHttpRequest();
+  req.open('POST', sendUrl, true);
+  req.responseType = 'blob';
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.setRequestHeader('token', sessionStorage.getItem('token'));
+  try {
+    req.onload = function () {
+      const data = req.response;
+      const a = document.createElement('a');
+      const blob = new Blob([data]);
+      const blobUrl = window.URL.createObjectURL(blob);
+      const _a = document.createElement('a');
+      _a.style.display = 'none';
+      _a.download = `${name}.xls`;
+      _a.href = blobUrl;
+      _a.click();
+      try {
+        document.body.removeChild(_a);
+      } catch (e) {
+      }
+    };
+  } catch (e) {
+    console.log(e);
+  }
+  req.send(JSON.stringify(sendData));
+}
+
+
+function downloadFileGet(sendUrl, sendData) {
+  const myDate = new Date();
+  const myTime = myDate.getTime();
+  const year = myDate.getFullYear().toString();
+  const month = (myDate.getMonth() + 1) < 10 ? '0' + (myDate.getMonth() + 1) : myDate.getMonth() + 1;
+  const day = (myDate.getDate()) < 10 ? '0' + (myDate.getDate()) : myDate.getDate();
+  const hours = (myDate.getHours()) < 10 ? '0' + (myDate.getHours()) : myDate.getHours();
+  const minutes = (myDate.getMinutes()) < 10 ? '0' + (myDate.getMinutes()) : myDate.getMinutes();
+  const seconds = (myDate.getSeconds()) < 10 ? '0' + (myDate.getSeconds()) : myDate.getSeconds();
+  const name = year + month + day + hours + minutes + seconds;
+  const req = new XMLHttpRequest();
+  req.open('GET', sendUrl, true);
+  req.responseType = 'blob';
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.setRequestHeader('token', sessionStorage.getItem('token'));
+  try {
+    req.onload = function () {
+      const data = req.response;
+      const a = document.createElement('a');
+      const blob = new Blob([data]);
+      const blobUrl = window.URL.createObjectURL(blob);
+      const _a = document.createElement('a');
+      _a.style.display = 'none';
+      _a.download = `${name}.xls`;
+      _a.href = blobUrl;
+      _a.click();
+      try {
+        document.body.removeChild(_a);
+      } catch (e) {
+      }
+    };
+  } catch (e) {
+    console.log(e);
+  }
+  req.send(JSON.stringify(sendData));
+}
+
+// ajax 请求函数
+function ajaxSubmit(sendUrl, sendData) {
+  let resultData: any;
+  $.ajax({
+    async: false,
+    type: 'post',
+    headers: {
+      'token': sessionStorage.getItem('token')// 此处放置请求到的用户token
+    },
+    contentType: 'application/json',
+    url: sendUrl,
+    data: JSON.stringify(sendData),
+    dataType: 'json',
+    success: function (data) {
+      resultData = ajaxSuccess(data);
+    },
+    error: function (error) {
+      ajaxError(error, sendUrl);
+    }
+  });
+  return resultData;
+}
+
+// ajax success执行函数
+function ajaxSuccess(data) {
+  if (data.code === '1001') {
+    const url = window.location.href;
+    const index = url.indexOf('#');
+    const host = url.slice(0, index);
+    window.location.href = host;
+  }
+  return data;
+
+}
+
+// ajax error执行函数
+function ajaxError(error, sendUrl) {
+  const url = window.location.href;
+  const index = url.indexOf('#');
+  const host = url.slice(0, index);
+  window.location.href = host;
+  // window.location.href = host + '#/login';
+  console.log(`error ${sendUrl}：`, error);
+}
+
+export {
+
+  reqPhone,
+  onDateChange,
+  onStrToDateChange,
+  queryEnumList,
+  downloadFile,
+  downloadFileGet,
+  ajaxSubmit,
+  ajaxSuccess,
+  ajaxError,
+};
+
+

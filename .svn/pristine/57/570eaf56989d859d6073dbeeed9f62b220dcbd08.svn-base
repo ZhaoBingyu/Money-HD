@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-trade-record',
+  templateUrl: './trade-record.component.html',
+  styleUrls: ['./trade-record.component.css']
+})
+export class TradeRecordComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

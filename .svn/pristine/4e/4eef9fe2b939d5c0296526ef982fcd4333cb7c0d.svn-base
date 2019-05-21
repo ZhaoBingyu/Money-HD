@@ -1,0 +1,42 @@
+import {ajaxSubmit} from './util';
+
+// 运营管理 设备管理表:新增
+function addEquipmentInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/addEquipmentInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 设备管理表:删除
+function deleteEquipmentInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/deleteEquipmentInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 设备管理表:设备修改
+function updateEquipmentInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/updateEquipmentInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+// 运营管理 设备管理表:查询设备list
+function selectEquipmentInfoList(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectEquipmentInfoList';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+//  运营管理 设备管理表:查询单一设备
+function selectEquipmentInfo(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/selectEquipmentInfo';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {addEquipmentInfo, deleteEquipmentInfo, updateEquipmentInfo, selectEquipmentInfoList, selectEquipmentInfo};
+
+
+
+

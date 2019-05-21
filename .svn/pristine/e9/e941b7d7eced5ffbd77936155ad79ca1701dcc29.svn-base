@@ -1,0 +1,84 @@
+/** 所有按钮 **/
+export const buttonListObj = {
+  updatePwd: false, // 修改密码Btn id
+
+  queryUserList: false, // 用户列表查询Btn id
+  addUser: false, // 新增用户Btn id
+  updateUser: false, // 修改用户Btn id
+  deleteUser: false, // 删除用户Btn id
+  restartUserPwd: false, // 重置用户密码Btn id
+  freezing: false, // 冻结用户Btn id
+  start: false, // 启用用户Btn id
+
+  queryRoleList: false, // 角色查询Btn id
+  addRole: false, // 新增业务角色Btn id
+  updateRole: false, // 修改业务角色Btn id
+  deleteRole: false, // 删除业务角色Btn id
+  authRole: false, // 角色权限维护Btn id
+
+  addMenu: false, // 增加子菜单Btn id
+  delMenu: false, // 删除菜单Btn id
+  updateMenu: false, // 修改菜单Btn id
+
+  addBtn: false, // 增加按钮Btn id
+  delBtn: false, // 删除按钮Btn id
+  updateBtn: false, // 修改按钮Btn id
+  statusBtn: true, // 禁止（启用）按钮Btn id
+
+  report001: false, // 查询客户交易笔数汇总Btn id,
+  downReport001: false, // 下载客户交易笔数汇总Btn id
+  report002: false, // 按时间范围汇总报表Btn id,
+  downReport002: false, // 按时间范围汇总报表Btn id
+  report003: false, // 代理商查询报表Btn id,
+  downReport003: false, // 代理商下载报表Btn id
+
+  addEnum: false, // 新增码表Btn id,
+  deleteEnum: false, // 删除码表Btn id
+  selectEnum: false, // 查询单一码表Btn id,
+  selectEnumList: false, // 查询码表listBtn id
+  updateEnum: false, // 码表修改Btn id,
+
+  addCustPay: false, // 新增缴费Btn id,
+  deleteCustPay: false, // 删除缴费Btn id
+  selectCustPay: false, // 查询单一缴费Btn id,
+  selectCustPayList: false, // 查询缴费listBtn id
+  updateCustPay: false, // 缴费修改Btn id,
+
+  selectPayDetailList: false, // 查询支付交易list Btn id
+
+  addEquipmentInfo: false, // 新增设备Btn id,
+  deleteEquipmentInfo: false, // 删除设备Btn id
+  selectEquipmentInfo: false, // 查询单一设备Btn id,
+  selectEquipmentInfoList: false, // 查询设备list Btn id
+  updateEquipmentInfo: false, // 设备修改Btn id,
+
+  addCertificateInfo: false, // 新增证书Btn id,
+  deleteCertificateInfo: false, // 删除证书Btn id
+  selecTCertificateInfo: false, // 查询单一证书Btn id,
+  selecTCertificateInfoList: false, // 查询证书list Btn id
+  updateCertificateInfo: false, // 证书修改Btn id,
+
+};
+
+
+/** 有权限按钮 **/
+export function authBtnList() {
+  try {
+    const buttonList = JSON.parse(sessionStorage.getItem('buttonList'));
+    for (const i in this.buttonListObj) {
+      for (let j = 0; j < buttonList.length; j++) {
+        if (buttonList[j] === i) {
+          this.buttonListObj[i] = true;
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
+
+
+
+

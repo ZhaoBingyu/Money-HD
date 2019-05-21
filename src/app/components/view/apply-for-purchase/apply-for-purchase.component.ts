@@ -1,0 +1,357 @@
+import {Component, OnInit} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {DomSanitizer} from '@angular/platform-browser';
+import {CommonUrlService} from '../../../service/common-url.service';
+import {CommonService} from '../../../service/common.service';
+
+
+@Component({
+  selector: 'app-apply-for-purchase',
+  templateUrl: './apply-for-purchase.component.html',
+  styleUrls: ['./apply-for-purchase.component.css']
+})
+export class ApplyForPurchaseComponent implements OnInit {
+  subscription: Subscription;
+  validateForm: FormGroup;
+
+  productDetailInfo: any = {
+    bankCode: undefined, // 银行编码
+    productCode: undefined, // 产品编码
+    productName: undefined, // 产品名称
+    imgUrl: undefined, // 产品图片
+    sevenDaysOfYield: undefined, // 7日年华收益率
+    perMillionIncome: undefined, // 每万分收益
+    netWorthDate: undefined, // 净值日期
+    invest_quantum: undefined, // 投资期限
+    invest_criterion: undefined, // 业绩基准
+    buy_product_min_amount: undefined, // 购买最小金额
+    add_product_amount: undefined, // 追加购买金额
+    allow_buy_time: undefined, // 允许购买时间[开始]
+    over_buy_time: undefined, // 允许购买时间[结束]
+    riskLevel: undefined, // 风险等级
+  };
+  isVisible = false;
+  isLoginVisible = false;
+  isOpenAccountVisible = false;
+  isErrVisible = false;
+  errMsg = '';
+  isResultVisible = false;
+  countDownNum = 60;
+  phoneErrorMsg = '请输入正确的手机号！';
+  captchaErrorMsg = '请输入验证码！';
+  phoneErrFlag = false;
+  timerFlag = false;
+  checkCaptchaFlag = false;
+  iframe: any;
+  riskPercent: any = 8; // 风险等级
+  productInfo: any = {}; //产品信息
+  token: any = undefined;
+  openAccountMsg: any = undefined;
+
+  constructor(private fb: FormBuilder,
+              private http: HttpClient,
+              private router: Router,
+              public url: CommonUrlService,
+              private sanitizer: DomSanitizer,
+              private common: CommonService) {
+  }
+
+  ngOnInit() {
+    this.productInfo = JSON.parse(sessionStorage.getItem('inputData'));
+    this.getDocIframeUrl(this.productInfo.bankCode);
+    this.validateForm = this.fb.group({
+      amount: [null, [Validators.required]],
+      code: [null, [Validators.required]],
+      agree: [false]
+    });
+    this.subscription = this.common.getRouterJump()
+      .subscribe(data => {
+        console.log(data);
+        // this.productInfo = data;
+      });
+    this.getProductDetailInfo();
+  }
+
+  // 理财产品详细信息查询
+  getProductDetailInfo() {
+
+    const sendData = {
+      bankCode: this.productInfo.bankCode, // 银行编码
+      productCode: this.productInfo.productCode, // 产品编码
+      channelNo: sessionStorage.getItem('channelNo') === 'undefined' ? null : sessionStorage.getItem('channelNo'), // 渠道标识
+    };
+    const resData = this.common.yql_fundQueryProductInfo(sendData);
+    this.productDetailInfo = resData.response_body;
+    if (this.productDetailInfo.investQuantum === '1') {
+      this.productDetailInfo.investQuantumText = '无固定期限';
+    } else if (this.productDetailInfo.investQuantum === '2') {
+      this.productDetailInfo.investQuantumText = '固定期限';
+    }
+    sessionStorage.setItem('inputData', JSON.stringify(this.productDetailInfo));
+    this.getRiskPercent(this.productDetailInfo.riskLevel);
+  }
+
+  // 获取风险等级
+  getRiskPercent(data) {
+    switch (data) {
+      case 'PR1':
+        this.productDetailInfo.riskLevelText = this.productDetailInfo.riskLevel + '级(很低)';
+        this.riskPercent = 8;
+        break;
+      case 'PR2':
+        this.productDetailInfo.riskLevelText = this.productDetailInfo.riskLevel + '级(较低)';
+        this.riskPercent = 16;
+        break;
+      case 'PR3':
+        this.productDetailInfo.riskLevelText = this.productDetailInfo.riskLevel + '级(适中)';
+        this.riskPercent = 24;
+        break;
+      case 'PR4':
+        this.productDetailInfo.riskLevelText = this.productDetailInfo.riskLevel + '级(较高)';
+        this.riskPercent = 32;
+        break;
+      case 'PR5':
+        this.productDetailInfo.riskLevelText = this.productDetailInfo.riskLevel + '级(高)';
+        this.riskPercent = 40;
+        break;
+
+    }
+  }
+
+  // 获取协议
+  getDocIframeUrl(data) {
+    switch (data) {
+      case 'ICBC':
+        this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.url.commonIframeUrl}sms.pdf`);
+        break;
+      case 'JSLC':
+        this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.url.commonIframeUrl}sms.pdf`);
+        break;
+      case 'XYBC': // 兴业银行
+        this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.url.commonIframeUrl}sms.pdf`);
+        break;
+    }
+  }
+
+
+  formatterDollar = (value: number) => {
+    if (!value) {
+      return `￥ `;
+    }
+    value = parseFloat(value.toFixed(2));
+    return `￥ ${value}`;
+  };
+  parserDollar = (value: string) => {
+    return value.replace('￥ ', '');
+  };
+
+  // 获取验证码
+  getCaptcha() {
+    const sendData = {
+      'Accept-Authentication': sessionStorage.getItem('sessionToken'),
+      bankCode: this.productDetailInfo.bankCode, // 银行编码
+      productCode: this.productDetailInfo.productCode, // 产品编码
+    };
+    const resData = this.common.api_fundBuySendMessage(sendData);
+    const openAccount = resData.response_head.service_resp_code;
+    // 未登录
+    if (openAccount === 'E88888') {
+      this.showLoginModal();
+      return;
+    }
+    // 未开户
+    if (openAccount === 'E77777') {
+      this.openAccountMsg = resData.response_head.service_resp_desc;
+      // this.openAccountMsg = this.openAccountMsg.replace(/'请确认是否已开通'/g, '请先开户')
+      // this.openAccountMsg = '您的企业尚未开户，请先去开户！';
+      this.showOpenAccountModal();
+      return;
+    }
+    // this.countDown();
+    // this.token = resData.response_body.token;
+  }
+
+
+  // 提交申购申请
+  submitApplyPurchase() {
+    if (!this.submitForm()) {
+      return;
+    }
+    if (!this.validateForm.controls.agree.value) {
+      return;
+    }
+
+    this.token = 'test';
+
+    const sendData = {
+      'Accept-Authentication': sessionStorage.getItem('sessionToken'),
+      amount: '' + this.validateForm.controls.amount.value, // 单位是元,小数点2位
+      code: this.validateForm.controls.code.value, // 短信验证码
+      token: this.token, // 短信验证码token
+      bankCode: this.productDetailInfo.bankCode, // 产品银行编码
+      productCode: this.productDetailInfo.productCode, // 产品编码
+    };
+    console.log(sendData);
+    const resData = this.common.api_fundBuyProduct(sendData);
+    const openAccount = resData.response_head.service_resp_code;
+    // 未登录
+    if (openAccount === 'E88888') {
+      this.showLoginModal();
+      return;
+    }
+    // 未开户
+    if (openAccount === 'E77777') {
+      this.openAccountMsg = resData.response_head.service_resp_desc;
+      this.showOpenAccountModal();
+      return;
+    }
+    if (resData.response_head.status !== '00') {
+      this.showErrModel();
+      this.errMsg = resData.response_head.service_resp_desc;
+    }
+
+    // console.log(sendData);
+    // const resData = this.common.api_buyProduct(sendData);
+    // this.showResultModal();
+  }
+
+  // form表单校验
+  submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+    for (const i in this.validateForm.controls) {
+      const status = this.validateForm.controls[i].status;
+      if (status === 'INVALID') {
+        console.log(i);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // 登录判断
+  isLogin() {
+    const loginFlag = this.common.validateLogin();
+    return loginFlag;
+  }
+
+  //  开户判断
+  isOpenAccount() {
+    return false;
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+
+  showOpenAccountModal(): void {
+    this.isOpenAccountVisible = true;
+  }
+
+  handleOpenAccountOk(): void {
+    this.isOpenAccountVisible = false;
+    const bankCode = this.productInfo.bankCode;
+    switch (bankCode) {
+      case 'ICBC':
+        this.router.navigate(['/home/openAccountICBC']);
+        break;
+      case 'JSLC':
+        this.router.navigate(['/home/openAccountJSBC']);
+        break;
+      case 'XYBC': // 兴业银行
+        this.router.navigate(['/home/openAccountXYBC']);
+        break;
+    }
+  }
+
+  handleOpenAccountCancel(): void {
+    this.isOpenAccountVisible = false;
+  }
+
+  showResultModal(): void {
+    this.isResultVisible = true;
+  }
+
+  handleResultOk(): void {
+    this.isOpenAccountVisible = false;
+    this.router.navigate(['/home/enterCenter/myAssets']);
+  }
+
+  handleResultCancel(): void {
+    this.isResultVisible = false;
+  }
+
+
+  showLoginModal(): void {
+    this.isLoginVisible = true;
+  }
+
+  handleLoginOk(): void {
+    this.isLoginVisible = false;
+    this.router.navigate(['/home/login']);
+  }
+
+  handleLoginCancel(): void {
+    this.isLoginVisible = false;
+  }
+
+  showErrModel(): void {
+    this.isErrVisible = true;
+  }
+
+  handleErrOk(): void {
+    this.isErrVisible = false;
+  }
+
+  handleErrCancel(): void {
+    this.isErrVisible = false;
+  }
+
+
+  // 倒计时
+  countDown() {
+    this.timerFlag = true;
+    const countTimer = setInterval(() => {
+      --this.countDownNum;
+      if (this.countDownNum === 0) {
+        this.timerFlag = false;
+        this.countDownNum = 60;
+        clearInterval(countTimer);
+      }
+    }, 1000);
+  }
+
+  // 手机号校验
+  checkPhone() {
+    const varlue = this.validateForm.controls.phone.value;
+    if (this.validateForm.get('phone').dirty) {
+      console.log(this.common.reqPhone(varlue));
+      if (!this.common.reqPhone(varlue)) {
+        this.phoneErrFlag = true;
+        return false;
+      }
+      this.phoneErrFlag = false;
+      return true;
+    }
+  }
+
+
+}

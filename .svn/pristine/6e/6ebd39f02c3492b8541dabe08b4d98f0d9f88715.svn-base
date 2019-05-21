@@ -1,0 +1,50 @@
+import {NgModule} from '@angular/core';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import zh from '@angular/common/locales/zh';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HashLocationStrategy, LocationStrategy, registerLocaleData} from '@angular/common';
+import {NZ_I18N, en_US} from 'ng-zorro-antd';
+
+import {CommonUrlService} from './service/common-url.service';
+import {CommonService} from './service/common.service';
+
+import {HomeComponent} from './components/common/home/home.component';
+import {ContentComponent} from './components/common/content/content.component';
+import {PortalComponent} from './components/portal/portal.component';
+import {PortalMenuSideComponent} from './components/portal-menu-side/portal-menu-side.component';
+import {TreeviewComponent} from './components/portal-menu-side/treeview/treeview.component';
+
+import {ShareModule} from './share.module';
+
+
+registerLocaleData(zh);
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    ContentComponent,
+    PortalComponent,
+    PortalMenuSideComponent,
+    TreeviewComponent,
+  ],
+  imports: [
+    ShareModule,
+    AppRoutingModule,
+      FormsModule,
+      ReactiveFormsModule,
+      HttpClientModule,
+      BrowserAnimationsModule
+  ],
+  providers: [{provide: NZ_I18N, useValue: en_US},
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    CommonService,
+    CommonUrlService],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}

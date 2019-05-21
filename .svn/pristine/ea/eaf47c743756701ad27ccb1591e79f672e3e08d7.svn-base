@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-public-account-management',
+  templateUrl: './public-account-management.component.html',
+  styleUrls: ['./public-account-management.component.css']
+})
+export class PublicAccountManagementComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

@@ -1,0 +1,29 @@
+import {Component, OnInit, Input} from '@angular/core';
+import {CommonService} from '../../../service/common.service';
+import {Router} from '@angular/router';
+
+@Component({
+  selector: 'app-treeview',
+  templateUrl: './treeview.component.html',
+  styleUrls: ['./treeview.component.css'],
+})
+export class TreeviewComponent implements OnInit {
+  @Input() menuArray: any;
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  ngOnInit() {
+  }
+
+  // 选中侧边菜单跳转路由
+  changeRouter(data) {
+    console.log('changeRouter', data);
+    const buttonList = data.buttonList;
+    const routeUrl = data.url;
+    this.router.navigate([routeUrl]);
+    this.common.setRouterJump(data);
+    sessionStorage.setItem('buttonList', JSON.stringify(buttonList));
+  }
+
+}

@@ -1,0 +1,19 @@
+import {downloadFile, ajaxSubmit} from './util';
+
+// 报表管理:代理商报表下载
+function downAgentReport(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/downReport003';
+  downloadFile(sendUrl, obj);
+}
+
+// 报表管理:代理商报表
+function agentReport(obj) {
+  const sendUrl = this.url.commonUrl + '/oper/report003';
+  const sendData: any = obj;
+  return ajaxSubmit(sendUrl, sendData);
+}
+
+export {
+  downAgentReport,
+  agentReport
+};

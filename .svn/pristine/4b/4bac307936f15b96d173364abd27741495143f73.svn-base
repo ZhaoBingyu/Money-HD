@@ -1,0 +1,53 @@
+import {Component, OnInit, DoCheck} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
+
+@Component({
+  selector: 'app-footer',
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.css']
+})
+export class FooterComponent implements OnInit {
+  isVisible = false;
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  ngOnInit() {
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.router.navigate(['/login']);
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  goRouter($event) {
+    const idName = $event.target.id;
+    if (idName === 'intrYQL' ||
+      idName === 'busChoose' ||
+      idName === 'downloadDoc' ) {
+      const routerUrl = `/home/portal/${idName}`;
+      this.router.navigate([routerUrl]);
+    } else if (idName === 'downloadDoc' || idName === 'downloadDemo' || idName === 'downloadTool'
+      || $event.target.parentNode.parentNode.id === 'downloadDemo') {
+      const routerUrl = `/home/portal/downloadDoc`;
+      this.router.navigate([routerUrl]);
+    } else {
+      const loginFlag = this.common.validateLogin();
+      if (loginFlag) {
+        const routerUrl = `/home/portal/${idName}`;
+        this.router.navigate([routerUrl]);
+      } else {
+        this.showModal();
+      }
+    }
+  }
+}

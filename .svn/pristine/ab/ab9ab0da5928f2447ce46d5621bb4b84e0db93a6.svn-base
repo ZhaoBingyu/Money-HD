@@ -1,0 +1,29 @@
+<div id="money_hd_home" appFixHeight>
+  <div class="finalProduceList">
+    <div class="title">
+      <h3>灵活理财</h3>
+    </div>
+    <div nz-row *ngFor="let item of productList" class="product_list">
+      <div nz-col [nzSpan]="20" [nzOffset]="2">
+        <nz-card nzHoverable>
+          <div nz-row nzGutter="32">
+            <div nz-col [nzSpan]="18" class="product_info">
+              <div class="bank_name">
+                <div class="product_rate">7日年化收益率&nbsp;&nbsp;<span>{{item.sevenDaysOfYield}}%</span>&nbsp;</div>
+                <!--<div class=""><span>{{item.perMillionIncome}}%</span>&nbsp;&nbsp;&nbsp;每万分收益</div>-->
+                <!--<div class=""><span>{{item.netWorthDate}}</span>&nbsp;&nbsp;&nbsp;净值日期</div>-->
+                <div class="product_name">{{item.productName}}</div>
+                <nz-divider nzDashed></nz-divider>
+                <img [src]="item.imgUrl" alt="">
+              </div>
+            </div>
+            <div nz-col [nzSpan]="6" class="apply_box">
+              <button style="max-width: 212px;" nz-button nzType="primary" (click)="applyForPurchase(item)">申购</button>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+  </div>
+</div>
+

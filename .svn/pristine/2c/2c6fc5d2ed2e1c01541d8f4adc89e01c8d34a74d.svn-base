@@ -1,0 +1,63 @@
+<div id="busRole" class="account_info" appFixHeight>
+  <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <div nz-col nzSpan="20" nzOffset="2">
+
+      <nz-divider nzDashed [nzText]="text4" nzOrientation="left">
+        <ng-template #text4>
+          <span style="font-weight: bolder">账户信息</span>
+        </ng-template>
+      </nz-divider>
+      <div class="result_table">
+        <div id="exportableTable" class="hidden-table" style="margin-bottom: 30px">
+          <div nz-row class="product_list">
+            <div nz-col [nzSpan]="22" [nzOffset]="1">
+              <nz-card nzHoverable>
+                <div nz-row nzGutter="0">
+                  <div nz-col [nzSpan]="24" class="product_info">
+                    <div nz-row>
+                      <!--<div nz-col [nzSpan]="6">已设置</div>-->
+                      <div nz-col [nzSpan]="4">
+                        <i nz-icon type="key" theme="outline" style="color: rgba(230,0,18,1);font-size: 20px"></i>
+                        &nbsp;&nbsp;登录密码
+                      </div>
+                      <div nz-col [nzSpan]="16" style="text-align: center">登录安全的保障请妥善保管</div>
+                      <div nz-col [nzSpan]="4" style="text-align: right">
+                        <button nz-button nzType="primary" (click)="goUpdateLoginPwd()">修改</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nz-card>
+            </div>
+            <div nz-col [nzSpan]="22" [nzOffset]="1">
+              <nz-card nzHoverable>
+                <div nz-row nzGutter="0">
+                  <div nz-col [nzSpan]="24" class="product_info">
+                    <div nz-row>
+                      <!--<div nz-col [nzSpan]="6">已设置</div>-->
+                      <div nz-col [nzSpan]="4">
+                        <i nz-icon type="key" theme="outline" style="color: rgba(230,0,18,1);font-size: 20px"></i>
+                        &nbsp;&nbsp;支付密码
+                      </div>
+                      <div nz-col [nzSpan]="16" style="text-align: center">保障资金安全 申购、赎回、转出等 相关操作时使用</div>
+                      <div nz-col [nzSpan]="4" style="text-align: right">
+                        <button nz-button nzType="primary" (click)="goUpdatePayPwd()">修改</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nz-card>
+            </div>
+          </div>
+        </div>
+        <!--<div class="page_box">-->
+        <!--<nz-pagination [nzPageIndex]="pageVo.currentPage"-->
+        <!--[nzTotal]="pageVo.totalPages"-->
+        <!--nzShowQuickJumper (nzPageIndexChange)="querySubmit()">-->
+        <!--</nz-pagination>-->
+        <!--</div>-->
+      </div>
+    </div>
+  </nz-content>
+</div>
+

@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-apply-for-purchase',
+  templateUrl: './apply-for-purchase.component.html',
+  styleUrls: ['./apply-for-purchase.component.css']
+})
+export class ApplyForPurchaseComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

@@ -1,0 +1,31 @@
+企业名称      companyName
+组织机构代码  companyNo
+营业执照号    companyNo
+营业执照有效期  businessDate
+税务登记号    companyNo
+办公地址     address
+经营范围     business
+办公地址邮编
+所属行业     
+员工人数
+营业收入
+资产总额
+授权办理人姓名        agentName
+授权办理人证件号      agentNo
+授权办理人证件有效期  agentDate
+授权办理人联系电话    phone
+法定代表人姓名       corporationName
+授权办理人证件号码   corporationNo
+授权办理人证件有效期 corporationDate
+
+
+
+
+
+
+
+
+
+
+
+

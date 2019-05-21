@@ -1,0 +1,204 @@
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {saveAs} from 'file-saver';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import {zh_CN, NzI18nService} from 'ng-zorro-antd';
+import {CommonService} from '../../../../service/common.service';
+import {CommonUrlService} from '../../../../service/common-url.service';
+
+@Component({
+  selector: 'app-public-account-management',
+  templateUrl: './public-account-management.component.html',
+  styleUrls: ['./public-account-management.component.css']
+})
+
+export class PublicAccountManagementComponent implements OnInit {
+  buttonListObj: any;
+  queryLoading = false;
+  date: any;
+  validateForm: FormGroup;
+  resultData: any = [];
+  pageVo: any = {
+    currentPage: undefined,
+    rows: undefined,
+    totalPages: undefined,
+    totalRows: undefined
+  };
+  roleUseScopeList: any;
+
+  allChecked = false;
+  indeterminate = false;
+  displayData = [];
+  data = [];
+  userRoleList: any = [{test: 'test'}];
+
+  queryBeginDate: any;
+  queryEndDate: any;
+
+  downFlag = false;
+
+  productList = [
+    {
+      enumCode: 1,
+      enumName: '产品1'
+    }
+  ];
+
+  constructor(private fb: FormBuilder,
+              private http: HttpClient,
+              private router: Router,
+              public common: CommonService,
+              public url: CommonUrlService,
+              private i18n: NzI18nService) {
+  }
+
+  ngOnInit() {
+    this.buttonListObj = this.common.buttonListObj;
+    this.common.authBtnList();
+    this.i18n.setLocale(zh_CN);
+    this.validateForm = this.fb.group({
+      date: [null, [Validators.required]],
+      custNo: [null],
+      custName: [null],
+      sales: [null],
+      fgs: [null],
+      agentName: [null],
+      classifyName: [null],
+      productLine: [null],
+    });
+  }
+
+
+  onDateChange(resultList: Date): void {
+    try {
+      for (let i = 0; i < 2; i++) {
+        const result = resultList[i];
+        const Year = result.getFullYear();
+        const Month = result.getMonth() + 1 < 10 ? '0' + (result.getMonth() + 1) : result.getMonth() + 1;
+        const Date = result.getDate() < 10 ? '0' + result.getDate() : result.getDate();
+        if (i === 0) {
+          this.queryBeginDate = `${Year}${Month}${Date}`;
+        } else {
+          this.queryEndDate = `${Year}${Month}${Date}`;
+        }
+      }
+
+    } catch (e) {
+      // console.log(e);
+    }
+
+  }
+
+  submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+    for (const i in this.validateForm.controls) {
+      // console.log(this.validateForm.controls[i].status);
+      const status = this.validateForm.controls[i].status;
+      if (status === 'INVALID') {
+        // console.log(i);
+        return false;
+      }
+    }
+    return true;
+  }
+
+//  查询
+  querySubmit() {
+    this.userRoleList = [];
+    const sendData = {
+      agentName: this.validateForm.controls.agentName.value,
+      classifyName: this.validateForm.controls.classifyName.value,
+      custName: this.validateForm.controls.custName.value,
+      custNo: this.validateForm.controls.custNo.value,
+      fgs: this.validateForm.controls.fgs.value,
+      productLine: this.validateForm.controls.productLine.value,
+      queryBeginDate: this.queryBeginDate,
+      queryEndDate: this.queryEndDate,
+      sales: this.validateForm.controls.sales.value,
+    };
+    try {
+      this.userRoleList = JSON.parse(this.common.rangeGenReport(sendData).dataList[0]);
+      this.downFlag = true;
+    } catch (e) {
+      this.userRoleList = [];
+      this.downFlag = false;
+    }
+    this.queryLoading = false;
+
+  }
+
+//  延时查询
+  delayQuerySubmit() {
+    if (!this.submitForm()) {
+      return;
+    }
+    this.queryLoading = true;
+    setTimeout(() => {
+      this.querySubmit();
+    }, 20);
+  }
+
+//  重置
+  resetBtn() {
+    this.validateForm.reset();
+    this.date = null;
+  }
+
+
+//  下载Excel报表
+  exportTable() {
+    if (!this.downFlag) {
+      return;
+    }
+    const sendData = {
+      agentName: this.validateForm.controls.agentName.value,
+      classifyName: this.validateForm.controls.classifyName.value,
+      custName: this.validateForm.controls.custName.value,
+      custNo: this.validateForm.controls.custNo.value,
+      fgs: this.validateForm.controls.fgs.value,
+      productLine: this.validateForm.controls.productLine.value,
+      queryBeginDate: this.queryBeginDate,
+      queryEndDate: this.queryEndDate,
+      sales: this.validateForm.controls.sales.value,
+      // token: sessionStorage.getItem('token'),
+    };
+    this.common.downRangeGenReport(sendData);
+  }
+
+  // 排序
+  sort(sort: { key: string, value: string }): void {
+    this.queryLoading = true;
+    this.userRoleList = this.userRoleList.sort(
+      (a, b) => (sort.value === 'ascend')
+        ? (parseFloat(a[sort.key]) > parseFloat(b[sort.key]) ? 1 : -1)
+        : (parseFloat(b[sort.key]) > parseFloat(a[sort.key]) ? 1 : -1));
+    const sortList = JSON.parse(JSON.stringify(this.userRoleList));
+    this.userRoleList = [];
+    this.userRoleList = sortList;
+    this.queryLoading = false;
+  }
+
+
+  goAddAccount() {
+    this.router.navigate(['/home/addPubAccountInfo']);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+.header {
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  width: 315px;
+  height: 40px;
+  top: 16px;
+  left: 50px;
+  background-image: url("../../../../assets/img/logo.png");
+  background-repeat: no-repeat;
+  /*background-size: contain;*/
+  cursor: pointer;
+}
+
+.ant-menu-dark.ant-menu-horizontal {
+  text-align: center;
+}
+
+.ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.user_phone {
+  /*position: absolute;*/
+  /*top: 0px;*/
+  /*right: 30px;*/
+  /*color: #ffffff;*/
+
+}
+
+.user_phone button {
+  color: #FFFFFF;
+  border: none;
+  /*background: rgb(31, 31, 31) !important;*/
+  background: rgba(0, 0, 0, 0);
+  margin-right: 30px;
+}
+
+.user_phone button:hover {
+  font-size: 14px;
+  font-weight: bolder;
+
+}
+
+::ng-deep .ant-menu-horizontal {
+  position: absolute;
+  right: 50px;
+  height: 64px;
+  background: rgba(0, 0, 0, 0);
+  text-align: center;
+  padding-top: 10px;
+  /*padding-right: 440px;*/
+  border-bottom: none;
+}
+
+::ng-deep .ant-menu-item {
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+::ng-deep .ant-layout-header {
+  background: rgba(230, 0, 18, 0.8);
+  padding: 0;
+}
+
+::ng-deep .ant-menu-horizontal > .ant-menu-item:hover {
+  color: #FFFFFF;
+  font-weight: bolder;
+  border-bottom: 2px solid #FFFFFF;
+}
+
+::ng-deep .ant-menu-horizontal > .ant-menu-item-selected {
+  color: #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  background: rgba(0, 0, 0, 0);
+}
+
+::ng-deep .ant-menu-item .anticon {
+  font-size: 16px;
+  font-weight: bolder;
+}

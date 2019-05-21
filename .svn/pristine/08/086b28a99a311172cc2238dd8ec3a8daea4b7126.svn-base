@@ -1,0 +1,87 @@
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent implements OnInit {
+  userName: any;
+  isVisible = false;
+  public loginFlag = false;
+  public phone = sessionStorage.getItem('phone');
+
+  constructor(private router: Router, public common: CommonService) {
+  }
+
+  ngOnInit() {
+    this.userName = sessionStorage.getItem('userName');
+    this.loginFlag = true;
+    // this.loginFlag = this.common.validateLogin();
+  }
+
+
+// 路由跳转
+  changeView(routerPath) {
+    switch (routerPath) {
+      case 'moneyHDHome': // 首页
+        this.router.navigate(['/home/moneyHDHome']);
+        return;
+      case 'enterpriseCenter': // 企业中心
+        this.router.navigate(['/home/enterpriseCenter']);
+        return;
+      case 'login': // 登录
+        this.router.navigate(['/home/login']);
+        return;
+      case 'register': // 注册
+        this.router.navigate(['/home/register']);
+        return;
+    }
+  }
+
+  logout() {
+    this.common.signOut();
+    sessionStorage.clear();
+    // this.router.navigate(['/login']);
+    const url = window.location.href;
+    const index = url.indexOf('#');
+    const host = url.slice(0, index);
+    window.location.href = host;
+
+  }
+
+  busCertifi() {
+    const flag = this.common.validateLogin();
+    if (flag) {
+      const routerUrl = `/home/portal/custInfoReg`;
+      this.router.navigate([routerUrl]);
+    } else {
+      this.showModal();
+    }
+  }
+
+  personInfo() {
+    const flag = this.common.validateLogin();
+    if (flag) {
+      const routerUrl = `/home/portal/personInfo`;
+      this.router.navigate([routerUrl]);
+    } else {
+      this.showModal();
+    }
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.router.navigate(['/login']);
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+}
